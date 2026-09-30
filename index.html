@@ -1,0 +1,1768 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fon Krizi Çözüm Senaryoları: 2026 fon tasfiyesi için geri kazanım ve kayıp dağılımı modeli | ARC Studios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0F3; --surface:#F9FAFB; --ink:#1B2A41; --muted:#5B687A; --rule:#C8D1DB; --rule-soft:#DEE4EA;
+  --rec:#22775B; --rec-soft:#DCEEE6; --loss:#B0432F; --loss-soft:#F4E0DA; --amber:#A8741A; --accent:#2C4A7A; --accent-soft:#DFE7F3;
+  --font:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --cond:"IBM Plex Sans Condensed", "IBM Plex Sans", "Arial Narrow", sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111923; --surface:#18222E; --ink:#E3E8EF; --muted:#94A2B4; --rule:#2F3D4E; --rule-soft:#243140;
+    --rec:#56B592; --rec-soft:#1D3A30; --loss:#E0806B; --loss-soft:#442821; --amber:#D9A441; --accent:#8DAEE0; --accent-soft:#223350;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111923; --surface:#18222E; --ink:#E3E8EF; --muted:#94A2B4; --rule:#2F3D4E; --rule-soft:#243140;
+  --rec:#56B592; --rec-soft:#1D3A30; --loss:#E0806B; --loss-soft:#442821; --amber:#D9A441; --accent:#8DAEE0; --accent-soft:#223350;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 20px 56px}
+header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:2px solid var(--ink);padding-bottom:16px}
+h1{font-family:var(--cond);font-weight:600;font-size:2.6rem;line-height:1;letter-spacing:-.01em;margin:0}
+.kicker{margin:6px 0 0;font-family:var(--cond);font-weight:600;font-size:1.05rem;color:var(--accent)}
+.lede{margin:8px 0 0;color:var(--muted);max-width:64ch}
+.stamp{font-size:.82rem;color:var(--muted);text-align:right;max-width:30ch;flex-shrink:0}
+@media(max-width:720px){header.top{flex-direction:column;align-items:flex-start}.stamp{text-align:left}h1{font-size:2.1rem}}
+
+nav.tabs{display:flex;gap:2px;margin:14px 0 22px;border-bottom:1px solid var(--rule);overflow-x:auto}
+.tab{appearance:none;background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font:inherit;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:hover{color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.sim{display:grid;grid-template-columns:340px minmax(0,1fr);gap:24px;align-items:start}
+@media(max-width:980px){.sim{grid-template-columns:minmax(0,1fr)}.sim>aside{order:2}}
+aside.controls{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;background:var(--surface);border:1px solid var(--rule);border-radius:6px}
+@media(max-width:980px){aside.controls{position:static;max-height:none}}
+.ctl-head{padding:14px 16px 10px;border-bottom:1px solid var(--rule)}
+.ctl-head p{margin:2px 0 0;font-size:.8rem;color:var(--muted);line-height:1.4}
+.ctl-head strong{font-family:var(--cond);font-size:1.05rem}
+details.grp{border-bottom:1px solid var(--rule-soft)}
+details.grp>summary{padding:12px 16px;font-weight:600;font-size:.92rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.grp>summary::-webkit-details-marker{display:none}
+details.grp>summary::after{content:"+";color:var(--muted);font-weight:400}
+details.grp[open]>summary::after{content:"−"}
+.ctl{padding:4px 16px 12px}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:.86rem}
+.ctl output{font-family:var(--cond);font-weight:600;font-size:.95rem;white-space:nowrap}
+.ctl small{display:block;color:var(--muted);font-size:.76rem;line-height:1.35;margin-top:1px}
+input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 0}
+select,input[type=number]{font:inherit;font-size:.88rem;color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:3px;padding:6px 8px;width:100%}
+.btn{font:inherit;font-size:.85rem;padding:7px 12px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:4px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.ctl-foot{padding:12px 16px}
+
+.presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:10px}
+@media(max-width:600px){.presets{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.preset{font:inherit;font-size:.84rem;text-align:left;padding:9px 10px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:4px;cursor:pointer;line-height:1.25}
+.preset:hover{border-color:var(--accent)}
+.preset[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.preset-desc{font-size:.88rem;color:var(--muted);margin:0 0 4px;max-width:75ch}
+
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;margin-bottom:20px}
+.panel h2{font-family:var(--cond);font-weight:600;font-size:1.3rem;margin:0 0 4px;line-height:1.2}
+.panel h3{font-family:var(--cond);font-weight:600;font-size:1.05rem;margin:18px 0 6px}
+.note{color:var(--muted);font-size:.86rem;margin:0 0 12px;max-width:78ch}
+.verdict{font-size:1.12rem;line-height:1.5;max-width:68ch;margin:6px 0 16px}
+.verdict .num{font-family:var(--cond);font-weight:600;font-size:1.45rem;white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:16px}
+.kpi{padding:10px 12px;border-left:1px solid var(--rule-soft)}
+.kpi:first-child{border-left:0;padding-left:0}
+.kpi .v{font-family:var(--cond);font-size:1.75rem;font-weight:600;line-height:1.1}
+.kpi .l{font-size:.8rem;color:var(--muted);line-height:1.3}
+@media(max-width:720px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi:nth-child(3){border-left:0;padding-left:0}.kpi:nth-child(n+3){border-top:1px solid var(--rule-soft)}}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media(max-width:1100px){.two{grid-template-columns:minmax(0,1fr)}}
+.two>.panel{margin-bottom:0}
+.stack{display:flex;flex-direction:column;gap:20px}
+
+.scroll{overflow-x:auto}
+svg{display:block}
+svg text{font-family:var(--font);fill:var(--muted);font-size:11px}
+svg .val{fill:var(--ink);font-family:var(--cond);font-weight:600;font-size:12px}
+.b-start{fill:var(--accent)} .b-loss{fill:var(--loss)} .b-end{fill:var(--rec)} .b-legal{fill:var(--amber)} .b-cost{fill:var(--muted)}
+.gl{stroke:var(--rule-soft)} .ax{stroke:var(--rule)} .conn{stroke:var(--muted);stroke-dasharray:2 3}
+.ln-nom{fill:none;stroke:var(--rec);stroke-width:2.2} .ln-pv{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-dasharray:5 4}
+.vline{stroke:var(--amber);stroke-dasharray:3 3}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:18px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+caption{text-align:left;color:var(--muted);font-size:.8rem;padding-bottom:6px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--rule-soft);text-align:left;vertical-align:top}
+th{font-family:var(--cond);font-weight:600;color:var(--muted);border-bottom:1px solid var(--rule);font-size:.86rem}
+.n{text-align:right;white-space:nowrap}
+tbody tr.clickable{cursor:pointer}
+tbody tr.clickable:hover td{background:var(--accent-soft)}
+tr.win td{background:var(--rec-soft)}
+tr.cur td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.tag{display:inline-block;font-size:.72rem;padding:1px 7px;border-radius:9px;background:var(--rec);color:var(--surface);margin-left:6px;vertical-align:1px;font-weight:600}
+.meter{height:5px;background:var(--rule-soft);border-radius:3px;margin-top:4px;min-width:60px}
+.meter i{display:block;height:100%;background:var(--rec);border-radius:3px}
+.meter.acc i{background:var(--accent)}
+.good{color:var(--rec);font-weight:600} .bad{color:var(--loss);font-weight:600}
+.objective{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 12px;font-size:.88rem}
+.objective select{width:auto}
+.objective label.chk{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.policy{border-left:3px solid var(--amber);padding:8px 12px;background:var(--bg);font-size:.84rem;color:var(--muted);margin-top:12px;max-width:80ch}
+
+.cohort-edit input{width:80px;text-align:right}
+.cohort-edit td{vertical-align:middle}
+
+.inv{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:980px){.inv{grid-template-columns:minmax(0,1fr)}}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.86rem;margin-bottom:3px}
+.field small{display:block;font-size:.76rem;color:var(--muted);margin-top:2px}
+.mix{display:grid;grid-template-columns:1fr 90px;gap:6px 10px;align-items:center;font-size:.86rem}
+.mix input{text-align:right}
+.mixsum{font-size:.82rem;margin-top:6px}
+.big{font-family:var(--cond);font-weight:600;font-size:2.2rem;line-height:1.05}
+.compare3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:12px 0}
+.compare3>div{padding:10px 12px;border-left:1px solid var(--rule-soft)}
+.compare3>div:first-child{border-left:0;padding-left:0}
+.compare3 .v{font-family:var(--cond);font-weight:600;font-size:1.35rem}
+.compare3 .l{font-size:.8rem;color:var(--muted)}
+@media(max-width:560px){.compare3{grid-template-columns:1fr}.compare3>div{border-left:0;padding-left:0;border-top:1px solid var(--rule-soft)}}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border-top:1px solid var(--rule)}
+.fact{padding:12px 14px 12px 0;border-bottom:1px solid var(--rule-soft)}
+.fact .v{font-family:var(--cond);font-weight:600;font-size:1.6rem;line-height:1.1}
+.fact .l{font-size:.84rem;line-height:1.35}
+.fact .s{font-size:.74rem;color:var(--muted);margin-top:3px}
+ol.events{list-style:none;margin:0;padding:0}
+ol.events li{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:9px 0;border-bottom:1px solid var(--rule-soft);font-size:.9rem}
+ol.events time{font-family:var(--cond);font-weight:600;color:var(--accent)}
+.prose{max-width:76ch}
+.prose p,.prose li{font-size:.92rem}
+.prose ul{padding-left:18px}
+.sources li{font-size:.86rem;margin-bottom:4px}
+.cf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0 18px;margin-top:6px}
+.cf-grid .ctl{padding:4px 0 10px}
+.regimes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:10px}
+@media(max-width:900px){.regimes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ln-rep{fill:none;stroke:var(--loss);stroke-width:2} .ln-fair{fill:none;stroke:var(--rec);stroke-width:2} .ln-units{fill:none;stroke:var(--amber);stroke-width:1.6;stroke-dasharray:4 3}
+.ln-bench{stroke:var(--accent);stroke-dasharray:5 4;stroke-width:1.4} .ln-par{stroke:var(--muted);stroke-dasharray:2 3}
+.area-dist{fill:var(--rec-soft);stroke:var(--rec);stroke-width:1.8}
+.mech{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:6px}
+@media(max-width:900px){.mech{grid-template-columns:1fr}}
+.mech h3{margin:0 0 4px}
+.mech p{margin:0;font-size:.88rem;color:var(--muted)}
+.st{display:inline-block;font-size:.72rem;font-weight:600;padding:1px 8px;border-radius:9px;white-space:nowrap}
+.st-veri{background:var(--rec-soft);color:var(--rec)} .st-tur{background:var(--accent-soft);color:var(--accent)}
+.st-vek{background:var(--loss-soft);color:var(--amber)} .st-var{background:var(--bg);color:var(--muted);border:1px solid var(--rule)}
+.ledger td:nth-child(3){white-space:nowrap}
+.ledger td{font-size:.84rem}
+.calc{font-family:var(--cond);font-size:.95rem;background:var(--bg);border-left:3px solid var(--accent);padding:10px 14px;margin:8px 0;line-height:1.6}
+.qlist li{margin-bottom:8px;font-size:.9rem}
+.site-foot{margin-top:36px;border-top:2px solid var(--ink);padding-top:18px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:32px}
+@media(max-width:860px){.foot-grid{grid-template-columns:minmax(0,1fr)}}
+.site-foot h2{font-family:var(--cond);font-weight:600;font-size:1.1rem;margin:0 0 8px}
+.site-foot p{font-size:.84rem;color:var(--muted);margin:0 0 8px;max-width:88ch}
+.kunye{border-left:1px solid var(--rule);padding-left:20px}
+@media(max-width:860px){.kunye{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:14px}}
+.kunye .brand{font-family:var(--cond);font-weight:600;font-size:1.5rem;color:var(--ink);letter-spacing:.02em;margin-bottom:4px}
+.kunye b{color:var(--ink)}
+.kunye .copy{color:var(--ink);font-size:.82rem}
+
+/* mobil düzen */
+.sim>*,.two>*,.inv>*,.stack>*{min-width:0}
+.scroll{-webkit-overflow-scrolling:touch}
+select,input[type=number]{box-sizing:border-box;max-width:100%}
+.jump-ctl{display:none;font-size:.88rem;font-weight:500;margin-top:8px}
+.swipe-hint{display:none;font-size:.76rem;color:var(--muted);margin:4px 0 0}
+@media(max-width:720px){
+  .wrap{padding:16px 14px 40px}
+  .panel{padding:14px 14px}
+  .panel h2{font-size:1.15rem}
+  .verdict{font-size:1rem}
+  .verdict .num{font-size:1.25rem}
+  .kpi .v{font-size:1.4rem}
+  select,input[type=number]{font-size:16px}
+  table{font-size:.82rem}
+  th,td{padding:6px 6px}
+  .swipe-hint{display:block}
+  .jump-ctl{display:inline-block}
+  .tab{padding:10px 11px}
+  .objective{flex-direction:column;align-items:flex-start}
+  ol.events li{grid-template-columns:78px 1fr;gap:10px}
+  .compare3 .v{font-size:1.2rem}
+  .big{font-size:1.8rem}
+}
+
+.fbar{display:flex;height:26px;border-radius:3px;overflow:hidden;background:var(--rule-soft);margin:6px 0 10px}
+.fbar i{display:block;height:100%;min-width:0}
+.fbar .c1{background:var(--accent)} .fbar .c2{background:var(--rec)} .fbar .c3{background:var(--amber)} .fbar .c4{background:#7A5AA8} .fbar .c5{background:var(--loss)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.sw.c1{background:var(--accent)} .sw.c2{background:var(--rec)} .sw.c3{background:var(--amber)} .sw.c4{background:#7A5AA8} .sw.c5{background:var(--loss)}
+.status{list-style:none;margin:8px 0 0;padding:0}
+.status li{padding:8px 0;border-bottom:1px solid var(--rule-soft);font-size:.9rem;max-width:88ch}
+.status li b{font-family:var(--cond);font-weight:600}
+.status .src{display:block;font-size:.76rem;color:var(--muted);margin-top:2px}
+.hold{width:64px;text-align:right}
+.ln-cum{fill:none;stroke:var(--loss);stroke-width:2.2}
+.ln-sens{fill:none;stroke:var(--accent);stroke-width:2.2}
+.band{fill:var(--amber);opacity:.14}
+.cur-dot{fill:var(--loss)}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Fon Krizi Çözüm Senaryoları</h1>
+      <p class="kicker">2026 fon tasfiyesi için geri kazanım ve kayıp dağılımı modeli</p>
+      <p class="lede">SPK'nın 17 Eylül 2026'da tasfiyesine karar verdiği 7 portföy yönetim şirketine ait 131 fon için geri ödeme senaryolarını hesaplar. Varsayımları değiştirin, yatırımcıya ne kadar ve ne zaman para döneceğini görün.</p>
+    </div>
+    <div class="stamp"><b style="color:var(--ink)">ARC Studios</b><br>Portföy verisi: TEFAS, 16.09.2026 kapanışı (130 fon, net 842,7 milyar TL). Model varsayımları tahmindir; resmi ödeme tutarlarını tasfiye yetkilisi bankalar belirler.</div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Bölümler">
+    <button class="tab" role="tab" id="t-sim" aria-controls="p-sim" aria-selected="true">Senaryo simülatörü</button>
+    <button class="tab" role="tab" id="t-cf" aria-controls="p-cf" aria-selected="false" tabindex="-1">Tasfiye olmasaydı</button>
+    <button class="tab" role="tab" id="t-pub" aria-controls="p-pub" aria-selected="false" tabindex="-1">Kamu tazmini</button>
+    <button class="tab" role="tab" id="t-inv" aria-controls="p-inv" aria-selected="false" tabindex="-1">Yatırımcı hesabı</button>
+    <button class="tab" role="tab" id="t-data" aria-controls="p-data" aria-selected="false" tabindex="-1">Kriz verisi</button>
+    <button class="tab" role="tab" id="t-led" aria-controls="p-led" aria-selected="false" tabindex="-1">Veri defteri</button>
+    <button class="tab" role="tab" id="t-meth" aria-controls="p-meth" aria-selected="false" tabindex="-1">Yöntem ve kaynaklar</button>
+  </nav>
+
+  <!-- SIMULATOR -->
+  <section id="p-sim" role="tabpanel" aria-labelledby="t-sim">
+    <div class="sim">
+      <aside class="controls" id="varsayimlar" aria-label="Varsayımlar">
+        <div class="ctl-head">
+          <strong>Varsayımlar</strong>
+          <p>Veri dışındaki her değer tahmindir. Kendi görüşünüze göre değiştirin; tüm grafikler anında güncellenir.</p>
+        </div>
+        <details class="grp" open>
+          <summary>Satış yöntemi ve süre</summary>
+          <div class="ctl">
+            <label for="methodL">Likit hisseler</label>
+            <select id="methodL"></select>
+          </div>
+          <div class="ctl">
+            <label for="methodI">Sığ hisseler (yoğun pozisyonlar)</label>
+            <select id="methodI"></select>
+          </div>
+          <div id="grp-main"></div>
+        </details>
+        <div id="ctl-groups"></div>
+        <div class="ctl-foot"><button class="btn" id="reset">Varsayılanlara dön</button></div>
+      </aside>
+
+      <div>
+        <div class="panel">
+          <h2>Senaryo</h2>
+          <div class="presets" id="presets" role="group" aria-label="Hazır senaryolar"></div>
+          <p class="preset-desc" id="preset-desc"></p>
+          <a href="#varsayimlar" class="jump-ctl">Varsayımları değiştir</a>
+        </div>
+
+        <div class="panel">
+          <h2>842,7 milyar TL'nin ne kadarı nakde dönüyor?</h2>
+          <p class="verdict" id="verdict"></p>
+          <div class="kpis" id="kpis"></div>
+          <div class="scroll"><svg id="waterfall" role="img" aria-labelledby="wf-title" style="min-width:700px;width:100%"></svg></div><p class="swipe-hint">Grafiği görmek için yana kaydırın.</p>
+          <p class="note" id="wf-title" style="margin-top:8px">Soldaki çubuk fonların 16.09.2026 net değeri. Kırmızı çubuklar her varlık grubunda satış ve tahsilat sırasında oluşan kaybı, gri çubuk tasfiye maliyetini, sarı çubuk soruşturma kapsamındaki malvarlıklarından beklenen ek tahsilatı gösterir.</p>
+        </div>
+
+        <div class="two">
+          <div class="panel">
+            <h2>Ödeme takvimi</h2>
+            <p class="note">Yatırımcı hesaplarına aktarılan nakdin 16.09 değerine oranla birikimli seyri. Kesikli çizgi, paranın zaman değeri düşülmüş (bugünkü değer) karşılığı.</p>
+            <div class="scroll"><svg id="timeline" role="img" aria-label="Birikimli ödeme takvimi" style="min-width:420px;width:100%"></svg></div><p class="swipe-hint">Grafiği görmek için yana kaydırın.</p>
+            <div class="legend"><span><i style="border-color:var(--rec)"></i>Nominal birikimli ödeme</span><span><i style="border-color:var(--accent);border-top-style:dashed"></i>Bugünkü değer</span><span><i style="border-color:var(--amber);border-top-style:dashed"></i>Tasfiye süresi sonu</span></div>
+          </div>
+          <div class="panel">
+            <h2>Kim anaparasını geri alıyor?</h2>
+            <p class="note">Katılma paylarını giriş dönemine göre gruplayın. Maliyet oranı, ortalama alış fiyatının 16.09 fiyatına oranıdır: 0,40, pay başına 16.09 değerinin %40'ı ödenmiş demek. Değerler örnektir; gerçek dağılım MKK ve aracı kurum kayıtlarındadır.</p>
+            <div class="scroll"><table class="cohort-edit">
+              <thead><tr><th>Giriş dönemi</th><th class="n">Pay oranı %</th><th class="n">Maliyet oranı</th><th class="n">Pay oranında</th><th class="n">Anapara öncelikli</th></tr></thead>
+              <tbody id="cohort-body"></tbody>
+            </table></div>
+            <p class="note" style="margin-top:8px" id="cohort-sum"></p>
+            <div class="policy">Mevcut tasfiye usul ve esasları nakdin katılma payı oranında dağıtılmasını öngörür. Anapara öncelikli dağıtım bir politika seçeneğidir: yatırımcı bazında maliyet verisi ve Kurul kararı gerektirir, erken girenlerden geç girenlere servet aktarımı anlamına gelir ve hukuken tartışmaya açıktır.</div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:20px">
+          <h2>Senaryoları karşılaştır</h2>
+          <p class="note">Her senaryo, varsayımlar panelindeki piyasa varsayımlarının aynısıyla hesaplanır; yalnızca satış yöntemi ve süre değişir. Bir satıra tıklayarak o senaryoya geçin.</p>
+          <div class="objective">
+            <label for="objective">Hedef</label>
+            <select id="objective">
+              <option value="pv">En yüksek bugünkü değer</option>
+              <option value="nominal">En yüksek nominal geri dönüş</option>
+              <option value="speed">En hızlı ödeme</option>
+              <option value="principal">Anaparasını alan en fazla pay</option>
+            </select>
+            <label class="chk"><input type="checkbox" id="exclSupport" checked> Dış alıcı desteği gerektirenleri dışla</label>
+          </div>
+          <div class="scroll">
+            <table id="compare">
+              <thead><tr><th>Senaryo</th><th class="n">Nominal</th><th class="n">Bugünkü değer</th><th class="n">Ort. ödeme</th><th class="n">Anaparası korunan pay</th><th class="n">Dış destek maliyeti</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="note" style="margin-top:8px">Dış destek maliyeti: kurumsal alıcının taban fiyatla, zorunlu satışta oluşacak fiyatın üzerinde ödediği tutar. Bu tutar yatırımcı için kazanç, alıcı için maliyettir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- COUNTERFACTUAL -->
+  <section id="p-cf" role="tabpanel" aria-labelledby="t-cf" hidden>
+    <div class="panel">
+      <h2>17 Eylül'de fonlar kapatılmasaydı ne olurdu?</h2>
+      <p class="note">Bu bölüm, SPK'nın 17.09.2026'da fonları TEFAS'ta işleme kapatıp tasfiye kararı almadığı alternatif yolları günlük olarak simüle eder. Başlangıç noktası aynıdır: 16.09 kapanışındaki 842,7 milyar TL ve portföy dağılımı. Hisse derinliği, ters repo ve diğer varlık varsayımları Senaryo simülatörü sekmesinden gelir.</p>
+      <div class="mech">
+        <div><h3>Normal işleyişte ödeme</h3><p>İade talimatı ileri fiyatla işler: talimat saatine göre o gün veya ertesi gün açıklanan fiyattan hesaplanır, izahnamedeki valörde (para piyasası fonlarında genellikle 1, hisse ağırlıklı fonlarda 2 iş günü) nakit olarak ödenir. Fon ödemeyi kendi nakdinden veya varlık satarak yapar.</p></div>
+        <div><h3>Sorun: bayat fiyat</h3><p>Tabanda alıcısı olmayan hisseler yine de kapanış fiyatından değerlenir; özel sektör alacakları ve ters repo defter değerinde durur. Yayımlanan fiyat, varlıkların gerçekte satılabileceği değerin üzerinde kalır. Erken çıkan bu fiyattan tam ödeme alır, kaybı fonda kalanlar üstlenir.</p></div>
+        <div><h3>Sonuç: kaçış</h3><p>Erken çıkmanın avantajı herkesi aynı anda çıkmaya iter. Nakit ve likit hisseler birkaç günde tükenir, sığ hisseler satılamaz, fon temerrüde düşer. Tasfiye kararı bu sarmalı durdurup herkesi aynı orana eşitledi; aşağıdaki modeller bunun maliyetini ve alternatiflerini ölçer.</p></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Alternatif yol</h2>
+      <div class="regimes" id="regimes" role="group" aria-label="Alternatif yollar"></div>
+      <p class="preset-desc" id="regime-desc"></p>
+      <details class="grp" style="border-top:1px solid var(--rule-soft);margin-top:12px">
+        <summary>Yatırımcı davranışı ve piyasa varsayımları</summary>
+        <div class="cf-grid" id="cf-ctl" style="padding:0 16px 8px"></div>
+      </details>
+    </div>
+
+    <div class="panel">
+      <h2>Kim ne alıyor?</h2>
+      <p class="verdict" id="cf-verdict"></p>
+      <div class="kpis" id="cf-kpis"></div>
+      <div class="two" style="margin-top:4px">
+        <div>
+          <h3 style="margin-top:0">Pay başına sonuç, çıkış sırasına göre</h3>
+          <p class="note">Yatay eksen katılma paylarını çıkış sırasına göre dizer: solda ilk çıkanlar, sağda sona kalanlar. Dikey eksen pay başına ödemenin 16.09 değerine oranı. Kesikli mavi çizgi 17.09 tasfiye yolunda herkesin aldığı oran.</p>
+          <div class="scroll"><svg id="cf-dist" role="img" aria-label="Çıkış sırasına göre pay başına ödeme" style="min-width:420px;width:100%"></svg></div><p class="swipe-hint">Grafiği görmek için yana kaydırın.</p>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Fon fiyatı ve gerçek değer</h3>
+          <p class="note">Kırmızı: yayımlanan birim fiyat. Yeşil: varlıkların sakin bir satışta ulaşabileceği değer. Aradaki fark, çıkanların fonda kalanlardan aldığı değer. Sarı: dolaşımdaki pay oranı.</p>
+          <div class="scroll"><svg id="cf-nav" role="img" aria-label="Yayımlanan fiyat ve gerçek değer" style="min-width:420px;width:100%"></svg></div><p class="swipe-hint">Grafiği görmek için yana kaydırın.</p>
+          <div class="legend"><span><i style="border-color:var(--loss)"></i>Yayımlanan fiyat</span><span><i style="border-color:var(--rec)"></i>Gerçekleşebilir değer</span><span><i style="border-color:var(--amber);border-top-style:dashed"></i>Dolaşımdaki pay</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Tüm yolları karşılaştır</h2>
+      <div class="objective">
+        <label for="cf-objective">Hedef</label>
+        <select id="cf-objective">
+          <option value="maximin">En kötü durumdaki %25'i koru</option>
+          <option value="pv">En yüksek toplam bugünkü değer</option>
+          <option value="equal">En eşit dağılım</option>
+        </select>
+      </div>
+      <div class="scroll">
+        <table id="cf-compare">
+          <thead><tr><th>Yol</th><th class="n">Nominal</th><th class="n">Bugünkü değer</th><th class="n">İlk çıkan %25</th><th class="n">Sona kalan %25</th><th class="n">Fark</th><th class="n">Temerrüt</th><th class="n">Ort. ödeme</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:8px">İlk çıkan ve sona kalan %25, pay başına ödemenin 16.09 değerine oranıdır. Tasfiye yolunda bu iki oran eşittir. Bu motor günlük fiyat dinamiğiyle çalıştığı için tasfiye satırı Senaryo simülatörü sonucundan farklı olabilir; karşılaştırma aynı motor içinde tutarlıdır.</p>
+    </div>
+  </section>
+
+  <!-- KAMU TAZMİNİ -->
+  <section id="p-pub" role="tabpanel" aria-labelledby="t-pub" hidden>
+    <div class="panel">
+      <h2>Anapara kayıplarını devlet öderse?</h2>
+      <p class="note">Bu sekme bir politika önerisi değildir. Tasfiyeden yatırımcıya dönen tutar anaparanın altında kalırsa, aradaki farkın kamu tarafından ödenmesi halinde tutarın ne olacağını ve bu tutarın hangi kaynaklardan karşılanabileceğini hesaplar. Geri dönüş oranı Senaryo simülatörü sekmesindeki seçili senaryodan gelir; kohort dağılımı aynı sekmedeki tablodan alınır.</p>
+      <h3>Mevcut durum (30.09.2026)</h3>
+      <ul class="status">
+        <li><b>Resmî bir kamu tazmin kararı yok.</b> Hükümetin tazmin biçimi konusunda görüşünün netleşmediği bildiriliyor; konu Meclis'in gündeminde.<span class="src">Kaynak: Kısa Dalga (28.09), PEGA Hukuk yatırımcı hakları rehberi</span></li>
+        <li><b>Yatırımcı Tazmin Merkezi (YTM) fiyat zararını kapsamıyor.</b> SPKn m.84/2 fiyat hareketlerinden doğan zararı tazmin dışında bırakıyor. 2026 azami tutar yatırımcı başına 2.065.145 TL. Kaynaklar aidatlar, idari para cezalarının yarısı ve halefiyet alacakları.<span class="src">Kaynak: YTM rehberleri (hukukcularevi.com, pegahukuk.com)</span></li>
+        <li><b>YENİ Parti'nin kanun teklifi (24.09).</b> 15 madde; yatırılan ve çekilen tutarların enflasyonla güncellenerek gerçek ekonomik kaybın esas alınması ve kamu kaynağı kullanılmadan telafi öngörülüyor. Milletvekili, mevcut yöntemle geri dönüşün %10–15 olacağını, teklifle %80'in üzerine çıkabileceğini söylüyor.<span class="src">Kaynak: T24, BirGün (24–30.09). Bu %10–15 iddiası modelin varsayılan sonucundan çok farklıdır; aşağıdaki duyarlılık tablosu bu farkın maliyete etkisini gösterir.</span></li>
+        <li><b>Tazmin limiti önerileri.</b> Muhalefetten, YTM limitinin en az 5 milyon TL'ye çıkarılması ve dolaylı zarar görenler için ayrı mekanizma önerisi geldi.<span class="src">Kaynak: Karar (30.09)</span></li>
+        <li><b>Hazine ve Maliye Bakanı Şimşek,</b> meşru yatırımcıların haklarının Adalet Bakanlığı ile koordinasyon içinde gözetildiğini ve finansal sisteme yansımaması için likidite başta olmak üzere gerekli tedbirlerin alınacağını açıkladı.<span class="src">Kaynak: Euronews (28.09)</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>1. Tazmin kuralı</h2>
+      <div class="presets" id="pub-rules" role="group" aria-label="Tazmin kuralları"></div>
+      <p class="preset-desc" id="pub-rule-desc"></p>
+      <details class="grp" style="border-top:1px solid var(--rule-soft);margin-top:12px">
+        <summary>Kural ayrıntıları ve yatırımcı varsayımları</summary>
+        <div class="cf-grid" id="pub-ctl" style="padding:0 16px 8px"></div>
+      </details>
+    </div>
+
+    <div class="panel">
+      <h2>Tazminin maliyeti</h2>
+      <p class="verdict" id="pub-verdict"></p>
+      <div class="kpis" id="pub-kpis"></div>
+      <div class="two" style="margin-top:4px">
+        <div>
+          <h3 style="margin-top:0">Dönemlere göre</h3>
+          <p class="note">Kayıp, alış maliyetinin tasfiyeden dönen orandan yüksek olduğu dönemlerde oluşur. İlk dönemlerde girenler bu oranın altında maliyetle girdiği için kayıpta değildir.</p>
+          <div class="scroll"><table id="pub-coh"><thead><tr><th>Giriş dönemi</th><th class="n">Pay</th><th class="n">Maliyet</th><th class="n">Tutma (yıl)</th><th class="n">Kayıp</th><th class="n">Tazmin (mlr TL)</th></tr></thead><tbody></tbody></table></div>
+          <p class="note" style="margin-top:6px" id="pub-coh-note"></p>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Kamunun net nakit ihtiyacı</h3>
+          <p class="note">Tazmin ödemeleri çıkış, halefiyetle devralınan hukuki tahsilat giriş olarak gösterilir. Eğri, birikimli net ihtiyacı verir.</p>
+          <div class="scroll" id="pub-cf-host"></div>
+          <p class="swipe-hint">Grafiği görmek için yana kaydırın.</p>
+          <p class="note" id="pub-cf-note" style="margin-top:6px"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Kuralların karşılaştırması</h2>
+      <p class="note">Her kural aynı geri dönüş oranı ve yatırımcı varsayımlarıyla hesaplanır; yalnızca kural parametreleri değişir. Bir satıra tıklayınca o kurala geçersiniz.</p>
+      <div class="scroll"><table id="pub-rules-tbl"><thead><tr><th>Kural</th><th class="n">Anapara eksiği (tavansız)</th><th class="n">Brüt tazmin</th><th class="n">Net kamu yükü</th><th class="n">GSYH'ye oran</th><th class="n">Yatırımcıda kalan kayıp</th></tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <div class="panel">
+      <h2>2. Kaynaklar: net yük nasıl karşılanır?</h2>
+      <p class="note">Net kamu yükü, aşağıdaki beş kaynağa dağıtılır. Dağılım bir tasarım tercihidir ve tahmindir; kaynak kapasitesi yalnızca bütçe kalemleri için veriyle karşılaştırılabiliyor, sektör ve kamu kuruluşları için kapasite verisi bulunmuyor.</p>
+      <div class="presets" id="pub-pkgs" role="group" aria-label="Finansman paketleri"></div>
+      <p class="preset-desc" id="pub-pkg-desc"></p>
+      <div class="cf-grid" id="pub-mix" style="margin-top:6px"></div>
+      <div class="fbar" id="pub-fbar" role="img" aria-label="Finansman dağılımı"></div>
+      <div class="scroll"><table id="pub-fin"><thead><tr><th>Kaynak</th><th class="n">Pay</th><th class="n">Tutar (mlr TL)</th><th>Ölçek göstergesi</th></tr></thead><tbody></tbody></table></div>
+      <p class="note" id="pub-fin-note" style="margin-top:8px"></p>
+      <h3>Bütçe ölçeği (2026)</h3>
+      <div class="facts" id="pub-scale"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Geri dönüş oranına duyarlılık</h2>
+      <p class="note">Kamu maliyeti, tasfiyeden dönen orana çok duyarlıdır. Seçili kural ve yatırımcı varsayımlarıyla, geri dönüş oranı değiştiğinde brüt tazmin ve net yük nasıl değişir? Sarı bant, muhalefetin mevcut yöntem için andığı %10–15 aralığıdır.</p>
+      <div class="scroll" id="pub-sens-host"></div>
+      <p class="swipe-hint">Grafiği görmek için yana kaydırın.</p>
+      <div class="scroll"><table id="pub-sens"><thead><tr><th>Toplam geri dönüş</th><th class="n">Brüt tazmin</th><th class="n">Net yük</th><th class="n">GSYH'ye oran</th><th class="n">2026 açık hedefine oran</th></tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <div class="panel">
+      <h2>Sınırlar</h2>
+      <ul class="status">
+        <li>Yatırımcı bazında maliyet ve pozisyon verisi yok. Kohort dağılımı örnektir; pozisyon büyüklükleri log-normal dağılım varsayımıyla modellenir. Tavanlı kuralların sonucu bu varsayıma bağlıdır.</li>
+        <li>Her yatırımcının kohort karışımı aynı kabul edilir. Gerçekte bazı yatırımcılar yalnızca kazançlı, bazıları yalnızca kayıplı dönemlerde girmiştir; bu yüzden yatırımcı bazlı tazmin toplamı farklı çıkabilir.</li>
+        <li>Hukuki tahsilat, geri dönüş oranına zaten dahildir. Kamunun halefiyetle devraldığı kısım, tazminin maliyetinden düşülür; ayrıca bir kaynak olarak sayılmaz.</li>
+        <li>Borçlanma, vergi ve harcama kısıtının faiz, enflasyon, büyüme ve risk primi üzerindeki etkileri modellenmez. Kaynaklar arasındaki karşılaştırma yalnızca ölçek göstergesidir.</li>
+        <li>Tazminin hukuki dayanağı (kanun, yetki, eşitlik ilkesi) bu modelin kapsamı dışındadır.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- INVESTOR -->
+  <section id="p-inv" role="tabpanel" aria-labelledby="t-inv" hidden>
+    <div class="inv">
+      <div class="panel">
+        <h2>Pozisyonunuz</h2>
+        <p class="note">Hesap, simülatörde seçili senaryoyu ve varsayımları kullanır.</p>
+        <div class="field"><label for="i-units">Katılma payı adedi</label><input type="number" id="i-units" min="0" step="1" value="100000"></div>
+        <div class="field"><label for="i-price">16.09.2026 birim fiyatı (TL)</label><input type="number" id="i-price" min="0" step="0.000001" value="1.25"><small>Aracı kurum ekstrenizde veya TEFAS fon sayfasında son açıklanan fiyat.</small></div>
+        <div class="field"><label for="i-cost">Ortalama alış fiyatı (TL)</label><input type="number" id="i-cost" min="0" step="0.000001" value="1.05"><small>Anaparanız: adet × ortalama alış fiyatı.</small></div>
+        <div class="field"><label for="i-tpl">Fonun varlık dağılımı</label>
+          <select id="i-tpl">
+            <option value="agg">131 fonun toplam dağılımı (veri)</option>
+            <option value="tp2">TP2 Tera Para Piyasası (veri, 16.09)</option>
+            <option value="pry">PRY Pusula Para Piyasası (veri, 16.09)</option>
+            <option value="ppf">Ters repo ağırlıklı para piyasası fonu (örnek)</option>
+            <option value="eqf">Hisse yoğun serbest fon (örnek)</option>
+            <option value="mix">Karma serbest fon (örnek)</option>
+            <option value="custom">Kendi fonumun dağılımı</option>
+          </select>
+          <small>Örnek dağılımlar temsilidir. En doğru sonuç için fonunuzun TEFAS'taki son portföy dağılımını girin.</small>
+        </div>
+        <div class="mix" id="mix"></div>
+        <div class="mixsum" id="mixsum"></div>
+      </div>
+      <div class="stack">
+        <div class="panel">
+          <h2>Tahmini geri ödeme</h2>
+          <div class="big" id="i-pay"></div>
+          <p class="note" id="i-pay-note" style="margin:4px 0 0"></p>
+          <div class="compare3" id="i-compare"></div>
+          <h3>Ne zaman gelir?</h3>
+          <div class="scroll"><table id="i-sched"><thead><tr><th>Dönem</th><th class="n">Tutar</th><th class="n">Birikimli</th><th class="n">Anaparaya oranı</th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <div class="panel">
+          <h2>Varlık grubuna göre</h2>
+          <div class="scroll"><table id="i-buckets"><thead><tr><th>Varlık grubu</th><th class="n">16.09 değeri</th><th class="n">Geri dönüş oranı</th><th class="n">Tahmini nakit</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA -->
+  <section id="p-data" role="tabpanel" aria-labelledby="t-data" hidden>
+    <div class="panel">
+      <h2>Temel rakamlar</h2>
+      <div class="facts" id="facts"></div>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <h2>Varlık dağılımı (16.09.2026)</h2>
+        <p class="note">Fon büyüklüğü × TEFAS portföy dağılım oranı. Repo satırı kaldıraçlı fonların borcudur.</p>
+        <div class="scroll"><table id="assets"><thead><tr><th>Varlık</th><th class="n">Net (mlr TL)</th><th class="n">Pay</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="stack">
+        <div class="panel">
+          <h2>Portföy yönetim şirketleri</h2>
+          <div class="scroll"><table id="pys"><thead><tr><th>Şirket</th><th class="n">Fon</th><th class="n">Büyüklük (mlr TL)</th><th class="n">Pay</th><th class="n">Yatırımcı*</th></tr></thead><tbody></tbody></table></div>
+          <p class="note" style="margin-top:6px">*Fon bazında toplanmıştır; birden fazla fonda payı olan yatırımcı birden çok sayılır. Fon adetleri ilk listeye (130 fon) göredir.</p>
+        </div>
+        <div class="panel">
+          <h2>En büyük 10 fon</h2>
+          <div class="scroll"><table id="top10"><thead><tr><th>Kod</th><th>Fon</th><th class="n">mlr TL</th><th class="n">Yatırımcı</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:20px">
+      <h2>Kriz nasıl gelişti</h2>
+      <ol class="events" id="events"></ol>
+    </div>
+  </section>
+
+
+  <!-- LEDGER -->
+  <section id="p-led" role="tabpanel" aria-labelledby="t-led" hidden>
+    <div class="panel">
+      <h2>Veri defteri</h2>
+      <p class="note">Modeldeki her sayının nereden geldiği. Veri: doğrudan kaynaktan. Türetilmiş: kaynaktaki verilerden hesaplandı. Vekil: aynı türden başka bir fonun verisi kullanıldı. Varsayım: veri yok, gerekçesiyle tahmin; son sütun bu açığı neyin kapatacağını söyler. Değer sütunu varsayımlar panelindeki kaydırıcılarla canlı güncellenir.</p>
+      <div class="kpis" id="led-sum"></div>
+      <div class="scroll"><table class="ledger" id="ledger"><thead><tr><th>Kalem</th><th class="n">Modeldeki değer</th><th>Durum</th><th>Dayanak</th><th>Açığı ne kapatır</th></tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <h2>TP2 ters repo teminatı</h2>
+        <p class="note">Tera Portföy Para Piyasası Fonu, KAP portföy dağılım raporu 31.08.2026. O tarihte fon 205 mlr TL, ters repo 128 mlr TL. 16.09'da fon 224,4 mlr TL, ters repo payı %63,17 (141,8 mlr TL); teminat oranlarının değişmediği varsayılır.</p>
+        <table><thead><tr><th>Teminat</th><th>Sınıf</th><th class="n">mlr TL</th><th class="n">Pay</th></tr></thead><tbody id="coll-tp2"></tbody></table>
+        <p class="note" style="margin-top:8px">Karşı taraf: Tera Yatırım Menkul Değerler A.Ş. (KAP, 15.09.2026: bir günlük, %43 faizli borsa dışı ters repo). Teminatın %60'ı karşı tarafla aynı gruba ait kıymetlerden (Tera Yatırım Bankası bonoları, Tera Varlık Kiralama sertifikaları, TPKGY) ve halka arzını karşı tarafın yürüttüğü DSTKF hissesinden oluşuyor: karşı taraf temerrüde düştüğünde teminatın değeri de aynı anda düşer.</p>
+      </div>
+      <div class="panel">
+        <h2>Diğer ters repolar: TLY (veri) ve PRY (vekil)</h2>
+        <p class="note">Pusula Portföy Para Piyasası Fonu, KAP portföy raporu 31.08.2026: 67,5 mlr TL ters repo. PRY'nin 16.09'da ters reposu yok (fon 111 mlr TL'den 18,9 mlr TL'ye düşerken çözülmüş); TP2 dışındaki 30,9 mlr TL'nin 6,5 mlr TL'si TLY'de ve 31.08 raporuna göre teminatı tamamen TPKGY (veri); kalan 24,4 mlr TL için bu döküm vekil olarak kullanılıyor. Böylece ters reponun %86'sı fonun kendi raporuna, %14'ü vekile dayanıyor.</p>
+        <table><thead><tr><th>Teminat</th><th>Sınıf</th><th class="n">mlr TL</th><th class="n">Pay</th></tr></thead><tbody id="coll-pry"></tbody></table>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:20px">
+      <h2>Erime süresi nasıl türetildi</h2>
+      <p class="note">Erime süresi: pozisyonun, günlük işlem hacminin tamamı kullanılsa kaç günde satılabileceği. Hacim verisi olan tek hisse DSTKF; diğer hisseler için fon payının fiili dolaşıma oranı ve DSTKF'nin devir hızı kullanıldı.</p>
+      <div class="calc" id="dstkf-calc"></div>
+      <div class="scroll"><table id="conc"><thead><tr><th>Hisse</th><th class="n">Fonların payı / fiili dolaşım</th><th class="n">Lot</th><th class="n">DSTKF devir hızıyla erime</th></tr></thead><tbody></tbody></table></div>
+      <p class="note" style="margin-top:8px">Kaynak: fonların son portföy raporlarından derlenen pozisyonlar (CNBC-e, 18.09.2026); PASEU oranı QNB Invest'in halka açıklığa göre hesabı. DSTKF hacim ve dolaşım verisi: aracı kurum şirket kartı (04.09.2026) ve günlük piyasa verileri. Bu hisselerin çoğu DSTKF'den daha az işlem gördüğü için gerçek erime süreleri tablodakinden uzun olabilir; model varsayılanı 60 gün bu yüzden medyanın (43) üzerinde.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Açık sorular</h2>
+      <ul class="qlist" id="questions"></ul>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section id="p-meth" role="tabpanel" aria-labelledby="t-meth" hidden>
+    <div class="panel prose">
+      <h2>Model nasıl çalışır</h2>
+      <p>Başlangıç noktası, 130 fonun 16.09.2026 TEFAS kapanışındaki net değeri (842,7 milyar TL) ve portföy dağılımıdır. Her varlık grubu için ayrı bir geri dönüş oranı ve ödeme zamanı hesaplanır; sonuçlar toplanıp yatırımcılara katılma payı oranında dağıtılmış kabul edilir.</p>
+      <h3>Hisse senetleri</h3>
+      <p>Hisse portföyü likit ve sığ olmak üzere ikiye ayrılır. Her iki kısım için önce 16.09 sonrasında oluşan fiyat değişimi uygulanır. Borsada satışta fiyat etkisi, piyasa mikro yapısında yaygın kullanılan karekök modeliyle hesaplanır: etki = katsayı × √(erime süresi ÷ satış süresi). Erime süresi, pozisyonun günlük işlem hacminin tamamı kullanılsa kaç günde satılacağıdır. Satış süresi uzadıkça etki düşer, ancak para geç gelir. Etki %90 ile sınırlandırılmıştır.</p>
+      <ul>
+        <li><b>Blok satış:</b> Pozisyonun belirlenen kısmı stratejik alıcılara iskontoyla, kalanı borsada satılır. Kalan kısım küçüldüğü için onun fiyat etkisi de azalır.</li>
+        <li><b>Kurumsal alım tabanı:</b> Bir alıcı konsorsiyumu pozisyonun bir kısmını 16.09 fiyatının belirli bir oranından alır. Taban fiyat zorunlu satış fiyatının üzerindeyse aradaki fark dış destek maliyeti olarak raporlanır.</li>
+        <li><b>Ayni dağıtım:</b> Hisseler satılmadan yatırımcıların hesaplarına pay oranında aktarılır. Satış baskısı ortadan kalkmaz, fondan yüz binlerce yatırımcıya geçer; bu yüzden dağıtım sonrası ek düşüş parametresi vardır. Para piyasası fonu yatırımcısının hisse almaya hazır olmaması ve operasyonel yük bu seçeneğin gerçek maliyetleridir.</li>
+        <li><b>Hibrit:</b> Yoğun pozisyonların bir kısmı blok satışla, kalanı ayni olarak dağıtılır.</li>
+      </ul>
+      <h3>Ters repo</h3>
+      <p>Ters repo alacağı (172,7 mlr TL) üç parçadır: TP2'nin 141,8 mlr TL'si ve TLY'nin 6,5 mlr TL'si (her ikisinin teminat dökümü fonların 31.08 raporlarından), diğer fonların 24,4 mlr TL'si (PRY dökümü vekil). Karşı taraf alacağın belirli bir oranını nakit öder; kalan için fon teminata el koyar. Teminat altı sınıfa ayrılır ve her sınıf kendi tahsilat oranı ve zamanıyla paraya çevrilir: DİBS, likit hisse, sığ hisse, grup şirketlerinin borçlanma araçları, grup fonu/GYO payı ve diğer. TP2'nin teminat dağılımı 31.08 KAP raporundan, diğerleri PRY'nin aynı tarihli raporundan (vekil) alınır. Teminat alacaktan fazlaysa fazlası karşı tarafa iade edilir. Tüm dökümler Veri defteri sekmesindedir.</p>
+      <h3>Diğer kalemler</h3>
+      <p>Para piyasası ve mevduat tam ve hızlı tahsil edilir. Özel sektör borçlanma araçları ilişkili taraf ve diğer olarak ayrılır; ilişkili taraf alacağının tahsilatı daha düşük ve daha geçtir. Başka fonların katılma payları, bu fonların ağırlıkla hisse fonu olduğu varsayımıyla hisse portföyünün geri dönüş oranıyla değerlenir. Repo borcu önce ödenir.</p>
+      <h3>Hukuki tahsilat ve zaman değeri</h3>
+      <p>Soruşturma kapsamında el konulan malvarlıklarından ve tazminat davalarından gelebilecek tutar, açığın belirli bir oranı olarak ve uzun bir gecikmeyle eklenir. Bu kalem en belirsiz olandır ve ayrı gösterilir. Bugünkü değer, girilen yıllık iskonto oranıyla hesaplanır; TL mevduat veya para piyasası getirisi makul bir karşılaştırmadır.</p>
+      <h3>Tasfiye olmasaydı: günlük model</h3>
+      <p>Alternatif yollar 16.09 sonrasını gün gün simüle eder. Her gün yatırımcıların bir kısmı iade ister; oran, taban iade oranına ve yayımlanan fiyattaki düşüşe (panik duyarlılığı) bağlıdır, temerrüt sonrası sıçrar. Fon önce nakitten, sonra likit, sonra sığ hisse satarak öder. Günlük satış kapasitesi hisselerin işlem hacmiyle sınırlıdır; sığ hissede satış kapasitesini dolduran gün fiyat taban yapar, ertesi gün hacim kilitlenir. Fiyatlar, alıcıların devreye girdiği temel değer tabanının altına düşmez. Yayımlanan fiyat hisseleri kapanıştan, ters repo ve özel sektör alacaklarını defter değerinden içerir; gerçekleşebilir değer ise ana modeldeki geri dönüş varsayımlarıyla hesaplanır. Süre sonunda kalan varlıklar gerçekleşebilir değerden paraya çevrilir; ödenmemiş iade talepleri önce ödenir, kalan fonda kalanlara dağıtılır.</p>
+      <h3>Kamu tazmini modeli</h3>
+      <p>Yatırımcı kaybı, giriş dönemine göre alış maliyetinin (16.09 birim değerine oran) tasfiyeden dönen oranın üzerinde kaldığı kısımdır: kayıp = max(0, maliyet − dönen oran). Dönen oran, simülatördeki toplam geri dönüşten, kamunun halefiyetle devrettiği hukuki tahsilat payı düşülerek bulunur. Enflasyonlu anapara kuralında maliyet, tutma süresi boyunca yıllık enflasyonla büyütülür: maliyet × (1 + enflasyon)<super>tutma süresi</super>. Yatırımcı başına tavan varsa pozisyon büyüklükleri ortalaması 842,7 milyar TL ÷ 455.758 yatırımcı olan bir log-normal dağılımla modellenir; her yatırımcı için tazmin = min(kayıp, tavan) + tavan üstü ödeme oranı × max(0, kayıp − tavan) hesaplanır ve dağılım üzerinde integre edilir. Net kamu yükü, brüt tazminden halefiyetle geri alınan tutarın (ödenen tazminle sınırlı) düşülmesiyle bulunur. Finansman dağılımı beş kaynağa pay olarak girilir; her kaynak için yalnızca bütçe verisiyle karşılaştırılabilen ölçek göstergesi hesaplanır. Geri dönüş oranına duyarlılık, aynı kural ve yatırımcı varsayımlarıyla oranın değiştirilmesiyle hesaplanır.</p>
+      <h3>Modelin yapmadıkları</h3>
+      <ul>
+        <li>Fon bazında gerçek portföy ve ters repo teminat dökümünü kullanmaz; yatırımcı hesabında fonunuzun dağılımını girmeniz gerekir.</li>
+        <li>Aynı hisseyi farklı fonların aynı anda satmasının birbirine etkisini ve BIST fiyat marjı (taban) kuyruklarını ayrıca modellemez; bunlar etki katsayısına gömülüdür.</li>
+        <li>16.09 sonrası fon fiyatı açıklanmadığı için başlangıç değeri 16.09 kapanışıdır. 17.09'da iletilip iptal edilen talimatlar da bu değerden pay oranında ödeme alır.</li>
+        <li>Vergi (stopaj) etkisini dikkate almaz.</li>
+      </ul>
+      <p>Bu araç bir analiz modelidir, yatırım tavsiyesi değildir. Sonuçlar tamamen varsayımlara bağlıdır; kendi pozisyonunuzla ilgili kararlar için aracı kurumunuzun ve tasfiye yetkilisi bankanın açıklamalarını esas alın.</p>
+
+      <h2 style="margin-top:28px">Kaynaklar</h2>
+      <ul class="sources">
+        <li><a href="https://t24.com.tr/politika/tbmmde-yeni-yasama-yilina-sermaye-piyasalarindaki-fon-krizi-ve-yatirimci-magduriyeti-gundemiyle-baslaniyor,1350800" target="_blank" rel="noopener">T24, TBMM gündemi ve YENİ Parti kanun teklifi (30.09.2026)</a></li>
+        <li><a href="https://www.birgun.net/haber/yeni-parti-den-fon-krizi-icin-kanun-teklifi-736662" target="_blank" rel="noopener">BirGün, YENİ Parti kanun teklifi ve %10–15 iddiası</a></li>
+        <li><a href="https://www.karar.com/guncel-haberler/erbakandan-fon-krizi-icin-16-maddelik-cozum-onerisi-bekletmeyin-hemen-2075230" target="_blank" rel="noopener">Karar, tazmin limiti önerisi (30.09.2026)</a></li>
+        <li><a href="https://pegahukuk.com/fon-krizi-yatirimci-haklari/" target="_blank" rel="noopener">PEGA Hukuk, yatırımcı hakları rehberi (resmî tazmin kararı yok)</a></li>
+        <li><a href="https://hukukcularevi.com/yatirimci-tazmin-merkezi-ytm-nedir-basvuru/" target="_blank" rel="noopener">YTM kaynakları ve 2026 azami tazmin tutarı</a></li>
+        <li><a href="https://tr.euronews.com/2026/09/28/fon-sorusturmasinda-son-durum-45-firma-ve-19-fona-yonelik-tedbirler-kaldirildi" target="_blank" rel="noopener">Euronews, Şimşek açıklaması ve mal varlığı tedbirleri (28.09.2026)</a></li>
+        <li><a href="https://kisadalga.net/haber/kisa-dalga-bulten/fon-skandalinin-sarsintilari-devam-ediyor-140599" target="_blank" rel="noopener">Kısa Dalga, tazmin biçimi konusunda hükümetin görüşü</a></li>
+        <li><a href="https://www.tbmm.gov.tr/milletvekili/UyeKomisyonKonusmaTutanakDetay?tutanakId=81580" target="_blank" rel="noopener">TBMM, 2026 bütçe kanunu teklifi gerekçesi</a></li>
+        <li><a href="https://tclira.com/merkezi-yonetim-butcesi-agustosta-129-milyar-tl-fazla-verdi/" target="_blank" rel="noopener">Hazine ve Maliye Bakanlığı, Ağustos 2026 bütçe gerçekleşmeleri</a></li>
+        <li><a href="https://fon.org.tr/fon/TP2" target="_blank" rel="noopener">TP2 portföy varlıkları, KAP 31.08.2026 raporu (fon.org.tr ayrıştırması)</a></li>
+        <li><a href="https://fon.org.tr/fon/TLY" target="_blank" rel="noopener">TLY portföy varlıkları, KAP 31.08.2026 raporu (fon.org.tr ayrıştırması)</a></li>
+        <li><a href="https://fon.org.tr/fon/PRY" target="_blank" rel="noopener">PRY portföy varlıkları, KAP 31.08.2026 raporu (fon.org.tr ayrıştırması)</a></li>
+        <li><a href="https://fon.org.tr/hisse/DSTKF" target="_blank" rel="noopener">DSTKF ortaklık yapısı ve piyasa değeri (KAP verisi)</a></li>
+        <li><a href="https://www.hisse.net/haber/tasfiye-edilen-fonlarda-hangi-hisseler-var-milyarlarca-lot-icerde-96626" target="_blank" rel="noopener">Tasfiyedeki fonların hisse pozisyonları / fiili dolaşım (CNBC-e derlemesi, 18.09.2026)</a></li>
+        <li><a href="https://spk.gov.tr/duyurular/basin-duyurulari/2026/tasfiye-suresine-iliskin-basin-duyurusu" target="_blank" rel="noopener">SPK, Tasfiye Süresine İlişkin Basın Duyurusu (28.09.2026)</a></li>
+        <li><a href="https://github.com/cberko/spk-tasfiye-fonlari" target="_blank" rel="noopener">SPK 2026/60 tasfiye fonlarının TEFAS verisiyle analizi (16.09.2026 kapanışı)</a></li>
+        <li><a href="https://www.forbes.com.tr/para-yatirim/tera-portfoy-un-tasfiyesi-is-bankasi-na-emanet" target="_blank" rel="noopener">Forbes Türkiye, QNB Invest raporu</a></li>
+        <li><a href="https://www.cnbce.com/piyasalar/fon-krizinde-en-buyuk-pay-teranin-varliklarin-yuzde-70i-5-fonda-yogunlasti-g38306" target="_blank" rel="noopener">CNBC-e, Reuters hesaplamaları</a></li>
+        <li><a href="https://tclira.com/fonlari-tasfiye-edilen-7-portfoy-sirketi-milyarlarca-lira-kar-elde-etti/" target="_blank" rel="noopener">TC Lira, TSPB verileriyle 7 PYŞ</a></li>
+        <li><a href="https://www.ekoturk.com/haberler/spkden-serbest-fonlara-yeni-sinirlar/" target="_blank" rel="noopener">Ekotürk, 28 Ağustos rehber değişikliği</a></li>
+        <li><a href="https://www.ekoturk.com/yazi/fon-piyasasinda-yeni-donem-daha-az-yogunlasma-daha-fazla-sermaye/" target="_blank" rel="noopener">Ekotürk, uyum takvimi</a></li>
+        <li><a href="https://www.ekonomim.com/finans/haberler/borsa/turkiyede-fon-krizi-nasil-basladi-nereye-gidiyor-haberi-918870" target="_blank" rel="noopener">Ekonomim, krizin kronolojisi</a></li>
+        <li><a href="https://t24.com.tr/ekonomi/10-soruda-adan-zye-fon-krizi-nasil-basladi-bugune-nasil-gelindi-zararin-buyuklugu-ne-kamu-maliyet-ustlenecek-mi,1348552" target="_blank" rel="noopener">T24, 10 soruda fon krizi</a></li>
+        <li><a href="https://www.harbiyehukuk.com/tera-pusula-fon-magdurlari-yatirimci-haklari/" target="_blank" rel="noopener">Tera'nın KAP açıklamasına atıf (iade talepleri)</a></li>
+        <li><a href="https://www.nationalturk.com/haberler/spk-tasfiye-edilen-131-fon/" target="_blank" rel="noopener">SPK açıklaması, 455.758 tekil yatırımcı</a></li>
+        <li><a href="https://haber.sol.org.tr/haber/spk-tasfiye-edilen-131-fondaki-yatirimci-sayisi-455-bin-758-kisi-414158" target="_blank" rel="noopener">Tasfiye süresi ve yatırımcı sayısı (ilk karar)</a></li>
+        <li><a href="https://spk.gov.tr/duyurular/basin-duyurulari/2026/tasfiye-konusu-fonlara-iliskin-sure-duzenlemesi" target="_blank" rel="noopener">SPK, Tasfiye Konusu Fonlara İlişkin Süre Düzenlemesi (20.09.2026)</a></li>
+      </ul>
+    </div>
+  </section>
+  <footer class="site-foot" id="kunye">
+    <div class="foot-grid">
+      <div>
+        <h2>Yasal uyarı</h2>
+        <p>Bu çalışma, kamuya açık verilerle hazırlanmış bağımsız bir analiz ve eğitim amaçlı simülasyondur. Burada yer alan bilgi, hesaplama ve yorumlar 6362 sayılı Sermaye Piyasası Kanunu kapsamında yatırım danışmanlığı değildir ve hiçbir finansal aracın alımı, satımı veya elde tutulması için öneri niteliği taşımaz. Yatırım danışmanlığı hizmeti yalnızca yetkili kuruluşlarla imzalanacak sözleşme çerçevesinde sunulabilir.</p>
+        <p>Sonuçlar, veri defterinde açıkça belirtilen varsayımlara dayanan tahminlerdir. Fon yatırımcılarına yapılacak ödemelerin tutarını ve zamanını yalnızca tasfiye yetkilisi kuruluşlar belirler; kendi pozisyonunuzla ilgili kararlarda aracı kurumunuzun ve tasfiye yetkilisinin açıklamalarını esas alın.</p>
+        <p>Veriler SPK, KAP, TEFAS ve basın kaynaklarından derlenmiştir; doğruluğu, eksiksizliği ve güncelliği garanti edilmez. Kaynak verideki veya hesaplamadaki hatalardan doğabilecek zararlardan sorumluluk kabul edilmez.</p>
+        <p>Modelde adı geçen kurum ve kişilere ilişkin "gözlem" ve "çıkarım" olarak işaretlenmiş ifadeler, portföy raporlarından yapılmış ve teyit bekleyen analitik değerlendirmelerdir. Hiçbir kişi veya kurum hakkında suç isnadı içermez; devam eden soruşturma ve yargılamalarda masumiyet karinesi esastır. Çalışmanın SPK, Takasbank, MKK, tasfiye yetkilisi bankalar veya adı geçen portföy yönetim şirketleriyle bağlantısı yoktur.</p>
+        <p>Hata ve düzeltme bildirimleri memnuniyetle karşılanır; model tartışmaya açık olarak yayımlanmaktadır.</p>
+      </div>
+      <div class="kunye">
+        <h2>Künye</h2>
+        <p class="brand">ARC Studios</p>
+        <p><b>Fon Krizi Çözüm Senaryoları</b><br>2026 fon tasfiyesi için geri kazanım ve kayıp dağılımı modeli</p>
+        <p>Model, veri derleme ve tasarım:<br><b>Emre Arıcı</b></p>
+        <p>Sürüm 1.0<br>Veri tarihi: 16.09.2026 TEFAS kapanışı ve 31.08.2026 KAP portföy raporları<br>Yayım: 30.09.2026</p>
+        <p class="copy">© 2026 ARC Studios, Emre Arıcı.<br>Tüm hakları saklıdır; kaynak kodu ve rapor, depodaki lisans koşullarıyla paylaşılır.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+(function(){
+"use strict";
+// ---------- DATA (TEFAS 16.09.2026, net, milyar TL) ----------
+const BASE = {eq:480.5, trp:172.7, pp:59.5, dep:31.9, gov:24.4, corp:52.9, fund:42.5, oth:6.3, repo:-28.0};
+const NAV = 842.7;
+// Ters repo: TP2 (Tera Para Piyasası) 16.09 TEFAS: 224,4 mlr × %63,17 = 141,8 mlr; kalan 30,9 mlr diğer fonlarda.
+const TRP = {tp2:141.8, oth:30.9};
+// Teminat dökümü (değer payı). TP2: KAP portföy raporu 31.08.2026 (128,4 mlr teminat). Diğer: vekil olarak PRY 31.08.2026 raporu.
+const MIX_TP2 = {dibs:0.223, liq:0, ill:0.397, relDebt:0.220, relFund:0.154, other:0.006};
+// Diğer 30,9 mlr: TLY 6,5 mlr (16.09: 243,6 × %2,67; 31.08 raporunda teminatın tamamı TPKGY) + kalan 24,4 mlr için PRY 31.08 dökümü vekil.
+const MIX_TLY = {dibs:0, liq:0, ill:0, relDebt:0, relFund:1, other:0};
+const MIX_PRY = {dibs:0.192, liq:0.100, ill:0.703, relDebt:0, relFund:0, other:0.005};
+const TRP_TLY = 6.5, TRP_PRX = 24.4;
+const MIX_OTH = Object.fromEntries(Object.keys(MIX_PRY).map(k=>[k,(MIX_TLY[k]*TRP_TLY+MIX_PRY[k]*TRP_PRX)/(TRP_TLY+TRP_PRX)]));
+const COLL_T = {dibs:1, liq:3, ill:4, relDebt:18, relFund:12, other:3}; // tahsilat ayı
+const GROUP_NAMES = {eq:"Hisse senedi", trp:"Ters repo", pp:"Para piyasası (BİST, Takasbank, taahhütlü)", dep:"Mevduat ve katılma hesabı", gov:"DİBS, hazine bonosu, kamu kira sert.", corp:"Özel sektör borçlanma araçları", fund:"Diğer fonların katılma payları", oth:"Diğer (vadeli teminat, GSYF, BYF)", repo:"Repo borcu"};
+
+const DEF = {
+  horizon:6, methodL:"market", methodI:"market",
+  illiqShare:0.65, mdL:-0.08, mdI:-0.35, dL:5, dI:60, kL:0.25, kI:0.45,
+  blockFrac:0.6, blockDiscL:0.06, blockDiscI:0.30, floorFrac:0.7, floorPrice:0.55, inkindDropL:0.03, inkindDropI:0.35,
+  cpPay:0.10, coverage:1.00, relFundRec:0.30,
+  corpRelShare:0.6, corpRelRec:0.30, corpOthRec:0.90, govRec:0.99, othRec:0.85, costPct:0.005,
+  legalPct:0.10, legalMonth:24, rate:0.35
+};
+const DEF_COHORTS = [
+  {name:"2025 ve öncesi", share:25, cost:0.40},
+  {name:"2026 ilk yarı", share:35, cost:0.75},
+  {name:"Temmuz–Ağustos 2026", share:28, cost:0.95},
+  {name:"Eylül 2026", share:12, cost:1.05}
+];
+const METHODS = {
+  market:"Borsada kademeli satış",
+  block:"Blok satış, kalanı borsada",
+  floor:"Kurumsal alım tabanı, kalanı borsada",
+  inkind:"Ayni dağıtım (hisse olarak)",
+  hybrid:"Blok satış, kalanı ayni dağıtım"
+};
+const PRESETS = [
+  {id:"legal", name:"Azami süre içinde satış", set:{methodL:"market",methodI:"market",horizon:6}, desc:"Varsayılan yol: hisseler Kurulun 20.09.2026 kararıyla belirlenen 6 aylık azami süre boyunca borsada kademeli satılır. Mevcut usul ve esasların en doğrudan uygulaması."},
+  {id:"fire", name:"Hızlı zorunlu satış", set:{methodL:"market",methodI:"market",horizon:3}, desc:"Tasfiye yetkilisi 6 aylık süreyi beklemeden satışları 3 ayda tamamlar. Para daha erken gelir ama sığ hisselerde fiyat baskısı en yüksek seviyede."},
+  {id:"slow", name:"Süre yeniden uzatılırsa", set:{methodL:"market",methodI:"market",horizon:12}, desc:"Kurul süreyi ikinci kez uzatır, satışlar 12 aya yayılır. Fiyat baskısı azalır ama para geç gelir; paranın zaman değeri bu kazancın bir kısmını geri alır."},
+  {id:"block", name:"Blok satış / ihale", set:{methodL:"market",methodI:"block",horizon:6}, desc:"Sığ hisselerdeki yoğun pozisyonların büyük kısmı iskontolu blok satış veya ihaleyle stratejik alıcılara devredilir, kalanı 6 aylık süre içinde borsada satılır."},
+  {id:"inkind", name:"Ayni dağıtım", set:{methodL:"market",methodI:"inkind",horizon:6}, desc:"Sığ hisseler satılmaz, yatırımcıların hesaplarına pay oranında hisse olarak aktarılır. Fiyat riski ve satış kararı yatırımcıya geçer."},
+  {id:"floor", name:"Kurumsal alım tabanı", set:{methodL:"market",methodI:"floor",horizon:6}, desc:"Bir alıcı konsorsiyumu sığ hisselerin bir kısmını önceden belirlenmiş taban fiyattan alır. Yatırımcı için en koruyucu, dışarıdan kaynak gerektiren seçenek."},
+  {id:"hybrid", name:"Hibrit çözüm", set:{methodL:"market",methodI:"hybrid",horizon:6}, desc:"Nakit ve likit varlıklar hemen ödenir. Yoğun pozisyonların bir kısmı blok satışla, kalanı ayni olarak dağıtılır; kalan satışlar 6 aylık süre içinde tamamlanır."}
+];
+
+const CONTROLS = [
+  {g:"main", items:[
+    {k:"horizon", l:"Tasfiye (satış) süresi", min:1, max:18, step:1, f:"months", h:"Azami 6 ay: Kurul 20.09.2026 tarih ve 59/1710 sayılı kararla 3 aydan 6 aya çıkardı; tasfiye daha erken de tamamlanabilir."}
+  ]},
+  {g:"Hisse piyasası", open:true, items:[
+    {k:"illiqShare", l:"Sığ, yoğun pozisyonların payı", min:0.2, max:0.95, step:0.01, f:"pct", h:"Hisse portföyünün, günlük hacmine göre çok büyük pozisyon taşınan kısmı."},
+    {k:"mdL", l:"Likit hisselerde 16.09 sonrası değişim", min:-0.5, max:0.2, step:0.01, f:"spct"},
+    {k:"mdI", l:"Sığ hisselerde 16.09 sonrası değişim", min:-0.9, max:0.2, step:0.01, f:"spct", h:"Tasfiye kararı sonrası taban serileri buraya yansır."},
+    {k:"dL", l:"Likit pozisyonun erime süresi", min:1, max:60, step:1, f:"days", h:"Günlük hacmin tamamı kullanılsa pozisyon kaç günde satılır."},
+    {k:"dI", l:"Sığ pozisyonun erime süresi", min:10, max:500, step:5, f:"days", h:"Veriden türetildi: DSTKF 27 gün; yoğunlaşma oranlarıyla 16–155 gün, medyan 43. Varsayılan 60."},
+    {k:"kL", l:"Likit hisse fiyat etkisi katsayısı", min:0.05, max:1, step:0.01, f:"x"},
+    {k:"kI", l:"Sığ hisse fiyat etkisi katsayısı", min:0.05, max:1, step:0.01, f:"x"}
+  ]},
+  {g:"Satış yöntemi ayrıntıları", items:[
+    {k:"blockFrac", l:"Blok satılabilen kısım", min:0, max:1, step:0.05, f:"pct", h:"Alıcı iştahının karşılayabildiği oran."},
+    {k:"blockDiscL", l:"Blok iskontosu, likit", min:0, max:0.4, step:0.01, f:"pct"},
+    {k:"blockDiscI", l:"Blok iskontosu, sığ", min:0, max:0.7, step:0.01, f:"pct"},
+    {k:"floorFrac", l:"Taban fiyattan alınan kısım", min:0, max:1, step:0.05, f:"pct"},
+    {k:"floorPrice", l:"Taban fiyat (16.09 fiyatına oran)", min:0.1, max:1, step:0.01, f:"pct"},
+    {k:"inkindDropL", l:"Ayni dağıtım sonrası ek düşüş, likit", min:0, max:0.3, step:0.01, f:"pct"},
+    {k:"inkindDropI", l:"Ayni dağıtım sonrası ek düşüş, sığ", min:0, max:0.8, step:0.01, f:"pct", h:"Yüz binlerce yatırımcı aynı hisseleri satmaya çalışırsa oluşacak baskı."}
+  ]},
+  {g:"Ters repo", items:[
+    {k:"cpPay", l:"Karşı tarafın nakit ödediği oran", min:0, max:1, step:0.05, f:"pct", h:"TP2'de karşı taraf ilişkili aracı kurum; bilanço büyüklüğü alacağın çok altında. Teminat dökümü: Veri defteri sekmesi."},
+    {k:"coverage", l:"Teminat / alacak oranı", min:0.7, max:1.3, step:0.01, f:"ratio", h:"31.08 raporunda 128,4 mlr teminat, 128 mlr alacak: yaklaşık 1,00."},
+    {k:"relFundRec", l:"Grup fonu/GYO payı teminatı tahsilatı", min:0, max:1, step:0.05, f:"pct", h:"TP2 teminatındaki TPKGY kalemi (%15,4)."}
+  ]},
+  {g:"Diğer varlıklar ve maliyet", items:[
+    {k:"corpRelShare", l:"Özel sektör borcunda ilişkili taraf payı", min:0, max:1, step:0.05, f:"pct", h:"Kurucu grubun kendi şirketlerine ait kira sertifikası, bono vb."},
+    {k:"corpRelRec", l:"İlişkili taraf tahsilat oranı", min:0, max:1, step:0.05, f:"pct"},
+    {k:"corpOthRec", l:"Diğer özel sektör tahsilat oranı", min:0.3, max:1, step:0.01, f:"pct"},
+    {k:"govRec", l:"DİBS tahsilat oranı", min:0.8, max:1, step:0.01, f:"pct"},
+    {k:"othRec", l:"Diğer kalemler tahsilat oranı", min:0.3, max:1, step:0.01, f:"pct"},
+    {k:"costPct", l:"Tasfiye maliyeti", min:0, max:0.03, step:0.001, f:"pct1", h:"Komisyon, saklama, hukuk ve operasyon giderleri."}
+  ]},
+  {g:"Hukuki tahsilat ve zaman değeri", items:[
+    {k:"legalPct", l:"Açığın hukuki yolla tahsil edilen kısmı", min:0, max:0.5, step:0.01, f:"pct", h:"El konulan malvarlıkları ve tazminat. En belirsiz kalem."},
+    {k:"legalMonth", l:"Hukuki tahsilatın zamanı", min:6, max:60, step:1, f:"months"},
+    {k:"rate", l:"Yıllık iskonto oranı", min:0, max:0.7, step:0.01, f:"pct", h:"Bugünkü değer hesabı için; TL mevduat getirisi makul bir ölçüdür."}
+  ]}
+];
+
+// ---------- FORMAT ----------
+const nf1 = new Intl.NumberFormat("tr-TR",{minimumFractionDigits:1,maximumFractionDigits:1});
+const nf0 = new Intl.NumberFormat("tr-TR",{maximumFractionDigits:0});
+const nf2 = new Intl.NumberFormat("tr-TR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const bn = v => nf1.format(v);
+const pc1 = v => "%" + nf1.format(v*100);
+const pc0 = v => "%" + nf0.format(v*100);
+const tl = v => nf0.format(Math.round(v)) + " TL";
+const FMT = {
+  pct:v=>"%"+nf0.format(v*100),
+  pct1:v=>"%"+nf1.format(v*100),
+  spct:v=>(v>0?"+":v<0?"−":"")+"%"+nf0.format(Math.abs(v*100)),
+  days:v=>nf0.format(v)+" gün",
+  months:v=>nf0.format(v)+" ay",
+  x:v=>nf2.format(v),
+  ratio:v=>nf2.format(v)+" kat"
+};
+const sum = arr => arr.reduce((s,e)=>s+e.a,0);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ---------- STATE ----------
+let P = {...DEF};
+let COH = DEF_COHORTS.map(c=>({...c}));
+try{
+  const s = JSON.parse(localStorage.getItem("tasfiye-masasi-v4")||"null");
+  if(s && s.P){ P = {...DEF, ...s.P}; }
+  if(s && Array.isArray(s.COH) && s.COH.length===4){ COH = s.COH; }
+}catch(e){}
+function save(){ try{ localStorage.setItem("tasfiye-masasi-v4", JSON.stringify({P,COH,C,CFREG,PB,PBRULE,PBPKG})); }catch(e){} }
+
+// ---------- MODEL ----------
+function spread(amount, offset, months){
+  const n = Math.max(1, Math.round(months)), ev=[];
+  for(let i=1;i<=n;i++) ev.push({m:offset+i, a:amount/n});
+  return ev;
+}
+function eqSeg(value, md, D, k, method, disc, drop, p){
+  const H = p.horizon*21, marked = value*(1+md);
+  const imp = f => Math.min(0.9, k*Math.sqrt(Math.max(0, D*f/H)));
+  const ev=[]; let support=0;
+  const f=p.blockFrac, ff=p.floorFrac, blockM=Math.min(2,p.horizon);
+  if(method==="market"){ ev.push(...spread(marked*(1-imp(1)),0,p.horizon)); }
+  else if(method==="block"){ ev.push({m:blockM,a:marked*f*(1-disc)}); if(f<1) ev.push(...spread(marked*(1-f)*(1-imp(1-f)),0,p.horizon)); }
+  else if(method==="floor"){
+    const mktEq=(1+md)*(1-imp(1));
+    const px=Math.max(p.floorPrice,mktEq);
+    support=value*ff*Math.max(0,p.floorPrice-mktEq);
+    ev.push({m:1.5,a:value*ff*px});
+    if(ff<1) ev.push(...spread(marked*(1-ff)*(1-imp(1-ff)),0,p.horizon));
+  }
+  else if(method==="inkind"){ ev.push({m:1.5,a:marked*(1-drop)}); }
+  else if(method==="hybrid"){ ev.push({m:blockM,a:marked*f*(1-disc)}); ev.push({m:1.5,a:marked*(1-f)*(1-drop)}); }
+  return {ev, support, impact:imp(1)};
+}
+function run(p){
+  const b={};
+  const eqL=BASE.eq*(1-p.illiqShare), eqI=BASE.eq*p.illiqShare;
+  const L=eqSeg(eqL,p.mdL,p.dL,p.kL,p.methodL,p.blockDiscL,p.inkindDropL,p);
+  const I=eqSeg(eqI,p.mdI,p.dI,p.kI,p.methodI,p.blockDiscI,p.inkindDropI,p);
+  b.eqL={g:"eq",book:eqL,ev:L.ev};
+  b.eqI={g:"eq",book:eqI,ev:I.ev};
+  const eqRatio=(sum(L.ev)+sum(I.ev))/BASE.eq;
+  const Hd=p.horizon*21;
+  const collImpI=Math.min(0.9,p.kI*Math.sqrt(p.dI/Hd)), collImpL=Math.min(0.9,p.kL*Math.sqrt(p.dL/Hd));
+  const CR={dibs:p.govRec, liq:(1+p.mdL)*(1-collImpL), ill:(1+p.mdI)*(1-collImpI), relDebt:p.corpRelRec, relFund:p.relFundRec, other:p.othRec};
+  const trpBucket=(claim,mix)=>{
+    const ev=[{m:2,a:claim*p.cpPay}], rem=claim*(1-p.cpPay);
+    const val=Object.keys(mix).reduce((s,k)=>s+mix[k]*CR[k],0)*p.coverage;
+    const scale=val>1?1/val:1; // teminat alacaktan fazlaysa fazlası karşı tarafa iade edilir
+    for(const k in mix){ const a=rem*mix[k]*CR[k]*p.coverage*scale; if(a<=0) continue;
+      if(k==="ill"||k==="liq") ev.push(...spread(a,COLL_T[k]-2,p.horizon)); else ev.push({m:COLL_T[k],a}); }
+    return ev;
+  };
+  b.trpT={g:"trpT",book:TRP.tp2,ev:trpBucket(TRP.tp2,MIX_TP2)};
+  b.trpO={g:"trpO",book:TRP.oth,ev:trpBucket(TRP.oth,MIX_OTH)};
+  b.pp={g:"pp",book:BASE.pp,ev:[{m:0.5,a:BASE.pp}]};
+  b.dep={g:"dep",book:BASE.dep,ev:[{m:0.5,a:BASE.dep}]};
+  b.gov={g:"gov",book:BASE.gov,ev:[{m:1,a:BASE.gov*p.govRec}]};
+  const rel=BASE.corp*p.corpRelShare;
+  b.corpO={g:"corpOth",book:BASE.corp-rel,ev:[{m:6,a:(BASE.corp-rel)*p.corpOthRec}]};
+  b.corpR={g:"corpRel",book:rel,ev:[{m:18,a:rel*p.corpRelRec}]};
+  b.fund={g:"fund",book:BASE.fund,ev:[{m:4,a:BASE.fund*eqRatio}]};
+  b.oth={g:"oth",book:BASE.oth,ev:[{m:2,a:BASE.oth*p.othRec}]};
+  b.repo={g:"repo",book:BASE.repo,ev:[{m:0.5,a:BASE.repo}]};
+  let cost=0;
+  for(const k in b){
+    const x=b[k]; x.pre=sum(x.ev);
+    if(x.pre>0){ cost+=x.pre*p.costPct; x.ev=x.ev.map(e=>({m:e.m,a:e.a*(1-p.costPct)})); }
+    x.cash=sum(x.ev);
+  }
+  const net=Object.values(b).reduce((s,x)=>s+x.cash,0);
+  const legal=Math.max(0,NAV-net)*p.legalPct;
+  const events=[].concat(...Object.values(b).map(x=>x.ev));
+  if(legal>0) events.push({m:p.legalMonth,a:legal,legal:true});
+  const total=net+legal;
+  const disc=m=>Math.pow(1+p.rate,m/12);
+  const pv=events.reduce((s,e)=>s+e.a/disc(e.m),0);
+  const pos=events.filter(e=>e.a>0);
+  const avgM=pos.reduce((s,e)=>s+e.a*e.m,0)/Math.max(1e-9,pos.reduce((s,e)=>s+e.a,0));
+  // group rates for investor calc
+  const groups={};
+  for(const k in b){
+    const x=b[k], g=x.g;
+    if(!groups[g]) groups[g]={book:0,cash:0,ev:[]};
+    groups[g].book+=x.book; groups[g].cash+=x.cash; groups[g].ev.push(...x.ev);
+  }
+  const merge=(a,c)=>({book:a.book+c.book,cash:a.cash+c.cash,ev:[...a.ev,...c.ev]});
+  groups.trp=merge(groups.trpT,groups.trpO); groups.corp=merge(groups.corpOth,groups.corpRel);
+  const coll=Object.keys(MIX_TP2).reduce((s,k)=>s+MIX_TP2[k]*CR[k],0);
+  return {b,groups,net,legal,total,pv,avgM,cost,events,support:L.support+I.support,R:total/NAV,Rnet:net/NAV,PVR:pv/NAV,eqRatio,coll,impL:L.impact,impI:I.impact};
+}
+function cohortCalc(R, list){
+  const tot=list.reduce((s,c)=>s+Math.max(0,+c.share||0),0)||1;
+  const L=list.map(c=>({name:c.name,share:Math.max(0,+c.share||0)/tot,cost:Math.max(0.01,+c.cost||0.01)}));
+  const P0=L.reduce((s,c)=>s+c.share*c.cost,0);
+  let pf;
+  if(R>=P0){
+    const G=L.reduce((s,c)=>s+c.share*Math.max(0,1-c.cost),0), extra=R-P0;
+    pf=L.map(c=>(c.cost+(G>0?extra*Math.max(0,1-c.cost)/G:0))/c.cost);
+  } else pf=L.map(()=>R/P0);
+  const coveredPR=L.filter(c=>R>=c.cost-1e-9).reduce((s,c)=>s+c.share,0);
+  return {P:P0,coveredPR,coveredPF:R>=P0?1:0,rows:L.map((c,i)=>({...c,pr:R/c.cost,pf:pf[i]}))};
+}
+
+// ---------- CONTROLS ----------
+const ctlRefs={};
+function buildControls(){
+  const mL=document.getElementById("methodL"), mI=document.getElementById("methodI");
+  for(const [k,v] of Object.entries(METHODS)){
+    mL.add(new Option(v,k)); mI.add(new Option(v,k));
+  }
+  mL.addEventListener("change",()=>{P.methodL=mL.value;update();});
+  mI.addEventListener("change",()=>{P.methodI=mI.value;update();});
+  const host=document.getElementById("ctl-groups");
+  CONTROLS.forEach(grp=>{
+    let container;
+    if(grp.g==="main"){ container=document.getElementById("grp-main"); }
+    else{
+      const d=document.createElement("details"); d.className="grp"; if(grp.open) d.open=true;
+      const s=document.createElement("summary"); s.textContent=grp.g; d.appendChild(s);
+      host.appendChild(d); container=d;
+    }
+    grp.items.forEach(it=>{
+      const w=document.createElement("div"); w.className="ctl";
+      const id="c-"+it.k;
+      w.innerHTML=`<label for="${id}"><span>${esc(it.l)}</span><output id="${id}-o"></output></label><input type="range" id="${id}" min="${it.min}" max="${it.max}" step="${it.step}">${it.h?`<small>${esc(it.h)}</small>`:""}`;
+      container.appendChild(w);
+      const inp=w.querySelector("input"), out=w.querySelector("output");
+      inp.addEventListener("input",()=>{P[it.k]=parseFloat(inp.value); out.textContent=FMT[it.f](P[it.k]); update();});
+      ctlRefs[it.k]={inp,out,f:it.f};
+    });
+  });
+  document.getElementById("reset").addEventListener("click",()=>{P={...DEF};C={...CF_DEF};document.querySelectorAll("#cf-ctl input").forEach(i=>{const k=i.id.slice(3);i.value=C[k];i.dispatchEvent(new Event("input"));});COH=DEF_COHORTS.map(c=>({...c}));if(window.__pubReset)window.__pubReset();syncControls();buildCohortRows();update();});
+}
+function syncControls(){
+  document.getElementById("methodL").value=P.methodL;
+  document.getElementById("methodI").value=P.methodI;
+  for(const k in ctlRefs){ const r=ctlRefs[k]; r.inp.value=P[k]; r.out.textContent=FMT[r.f](P[k]); }
+}
+function activePreset(){
+  const x=PRESETS.find(pr=>Object.entries(pr.set).every(([k,v])=>P[k]===v));
+  return x?x.id:null;
+}
+function buildPresets(){
+  const host=document.getElementById("presets");
+  PRESETS.forEach(pr=>{
+    const b=document.createElement("button"); b.className="preset"; b.type="button"; b.dataset.id=pr.id; b.textContent=pr.name;
+    b.addEventListener("click",()=>applyPreset(pr.id));
+    host.appendChild(b);
+  });
+}
+function applyPreset(id){
+  const pr=PRESETS.find(p=>p.id===id); if(!pr) return;
+  Object.assign(P,pr.set); syncControls(); update();
+}
+
+// ---------- COHORTS ----------
+function buildCohortRows(){
+  const tb=document.getElementById("cohort-body"); tb.innerHTML="";
+  COH.forEach((c,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${esc(c.name)}</td><td class="n"><input type="number" min="0" max="100" step="1" value="${c.share}" aria-label="${esc(c.name)} pay oranı"></td><td class="n"><input type="number" min="0.05" max="3" step="0.05" value="${c.cost}" aria-label="${esc(c.name)} maliyet oranı"></td><td class="n" data-pr></td><td class="n" data-pf></td>`;
+    const [a,b]=tr.querySelectorAll("input");
+    a.addEventListener("input",()=>{COH[i].share=parseFloat(a.value)||0;update();});
+    b.addEventListener("input",()=>{COH[i].cost=parseFloat(b.value)||0.01;update();});
+    tb.appendChild(tr);
+  });
+}
+
+// ---------- RENDER: SIMULATOR ----------
+function renderSim(r){
+  const ap=activePreset();
+  document.querySelectorAll(".preset").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===ap?"true":"false"));
+  const pr=PRESETS.find(p=>p.id===ap);
+  document.getElementById("preset-desc").textContent = pr ? pr.desc : "Özel senaryo: satış yöntemi veya süre hazır senaryolardan farklı ayarlandı.";
+  const coh=cohortCalc(r.R,COH);
+  document.getElementById("verdict").innerHTML =
+    `Bu varsayımlarla fonların tasfiyesinden <span class="num">${bn(r.net)} milyar TL</span> nakit çıkıyor (16.09 değerine göre ${pc1(r.Rnet)}). Hukuki tahsilatla birlikte toplam ${bn(r.total)} milyar TL (${pc1(r.R)}). Paranın zaman değeri düşüldüğünde bu oran ${pc1(r.PVR)} seviyesine iniyor.`;
+  const kp=[
+    [pc1(r.R),"Nominal geri dönüş (hukuki tahsilat dahil)"],
+    [pc1(r.PVR),"Bugünkü değerle geri dönüş"],
+    [nf1.format(r.avgM)+" ay","Ağırlıklı ortalama ödeme süresi"],
+    [pc0(coh.coveredPR),"Pay oranında dağıtımda anaparası tam korunan paylar"]
+  ];
+  document.getElementById("kpis").innerHTML=kp.map(([v,l])=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+  renderWaterfall(r);
+  renderTimeline(r);
+  renderCohorts(r,coh);
+  renderCompare();
+}
+function renderWaterfall(r){
+  const b=r.b;
+  const loss=x=>x.book-x.pre;
+  const bars=[
+    {l:"16.09 fon değeri",t:"start",v:NAV},
+    {l:"Likit hisse",t:"loss",v:loss(b.eqL)},
+    {l:"Sığ hisse",t:"loss",v:loss(b.eqI)},
+    {l:"Ters repo",t:"loss",v:loss(b.trpT)+loss(b.trpO)},
+    {l:"Özel sektör borçları",t:"loss",v:loss(b.corpO)+loss(b.corpR)},
+    {l:"Fon payları",t:"loss",v:loss(b.fund)},
+    {l:"Nakit ve DİBS",t:"loss",v:loss(b.pp)+loss(b.dep)+loss(b.gov)+loss(b.oth)},
+    {l:"Tasfiye maliyeti",t:"cost",v:r.cost},
+    {l:"Tasfiye nakdi",t:"end",v:r.net},
+    {l:"Hukuki tahsilat",t:"legal",v:r.legal},
+    {l:"Toplam geri dönüş",t:"end",v:r.total}
+  ];
+  const W=820,Hh=330,ml=46,mr=10,mt=22,mb=58;
+  const iw=W-ml-mr, ih=Hh-mt-mb, slot=iw/bars.length, bw=Math.min(46,slot*0.64);
+  const ymax=NAV*1.02, y=v=>mt+ih-(v/ymax)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${Hh}" xmlns="http://www.w3.org/2000/svg">`;
+  [0,200,400,600,800].forEach(t=>{ s+=`<line class="gl" x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}"/><text x="${ml-6}" y="${y(t)+4}" text-anchor="end">${nf0.format(t)}</text>`; });
+  s+=`<text x="${ml-6}" y="${mt-8}" text-anchor="end">mlr TL</text>`;
+  let level=NAV, prevTop=null;
+  bars.forEach((d,i)=>{
+    const x=ml+slot*i+(slot-bw)/2;
+    let y0,y1,cls,label;
+    if(d.t==="start"){ y0=0;y1=d.v;cls="b-start";label=bn(d.v);level=d.v; }
+    else if(d.t==="loss"||d.t==="cost"){ y1=level;y0=level-d.v;level=y0;cls=d.t==="cost"?"b-cost":"b-loss";label=d.v>0.05?"−"+bn(d.v):"0"; }
+    else if(d.t==="end"){ y0=0;y1=d.v;cls="b-end";label=bn(d.v);level=d.v; }
+    else { y0=level;y1=level+d.v;level=y1;cls="b-legal";label="+"+bn(d.v); }
+    const top=y(Math.max(y0,y1)), h=Math.max(1,Math.abs(y(y0)-y(y1)));
+    if(prevTop!==null && i>0){ s+=`<line class="conn" x1="${x-(slot-bw)}" x2="${x}" y1="${prevTop}" y2="${prevTop}"/>`; }
+    s+=`<rect class="${cls}" x="${x}" y="${top}" width="${bw}" height="${h}" rx="2"><title>${esc(d.l)}: ${label} mlr TL</title></rect>`;
+    s+=`<text class="val" x="${x+bw/2}" y="${top-5}" text-anchor="middle">${label}</text>`;
+    const words=d.l.split(" "); const mid=Math.ceil(words.length/2);
+    const l1=words.length>1?words.slice(0,mid).join(" "):d.l, l2=words.length>1?words.slice(mid).join(" "):"";
+    s+=`<text x="${x+bw/2}" y="${Hh-mb+18}" text-anchor="middle">${esc(l1)}</text>`;
+    if(l2) s+=`<text x="${x+bw/2}" y="${Hh-mb+32}" text-anchor="middle">${esc(l2)}</text>`;
+    prevTop=y(level);
+  });
+  s+=`<line class="ax" x1="${ml}" x2="${W-mr}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  const svg=document.getElementById("waterfall");
+  svg.outerHTML=s.replace("<svg ",`<svg id="waterfall" role="img" aria-labelledby="wf-title" style="min-width:700px;width:100%" `);
+}
+function renderTimeline(r){
+  const maxM=Math.max(36,Math.ceil((P.legalMonth+3)/6)*6);
+  const W=560,H=280,ml=44,mr=14,mt=14,mb=34, iw=W-ml-mr, ih=H-mt-mb;
+  const x=m=>ml+(m/maxM)*iw, y=v=>mt+ih-Math.max(0,Math.min(1,v))*ih;
+  const ev=[...r.events].sort((a,b)=>a.m-b.m);
+  let cumN=0,cumP=0,dN=`M${x(0)},${y(0)}`,dP=dN;
+  ev.forEach(e=>{
+    const d=Math.pow(1+P.rate,e.m/12);
+    dN+=` L${x(e.m)},${y(cumN/NAV)}`; dP+=` L${x(e.m)},${y(cumP/NAV)}`;
+    cumN+=e.a; cumP+=e.a/d;
+    dN+=` L${x(e.m)},${y(cumN/NAV)}`; dP+=` L${x(e.m)},${y(cumP/NAV)}`;
+  });
+  dN+=` L${x(maxM)},${y(cumN/NAV)}`; dP+=` L${x(maxM)},${y(cumP/NAV)}`;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  [0,0.25,0.5,0.75,1].forEach(t=>{ s+=`<line class="gl" x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}"/><text x="${ml-6}" y="${y(t)+4}" text-anchor="end">%${t*100}</text>`; });
+  for(let m=0;m<=maxM;m+=6){ s+=`<text x="${x(m)}" y="${H-mb+16}" text-anchor="middle">${m}</text>`; }
+  s+=`<text x="${W-mr}" y="${H-4}" text-anchor="end">ay (16.09.2026'dan itibaren)</text>`;
+  s+=`<line class="vline" x1="${x(P.horizon)}" x2="${x(P.horizon)}" y1="${mt}" y2="${mt+ih}"/>`;
+  s+=`<path class="ln-pv" d="${dP}"/><path class="ln-nom" d="${dN}"/>`;
+  s+=`<line class="ax" x1="${ml}" x2="${W-mr}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  const svg=document.getElementById("timeline");
+  svg.outerHTML=s.replace("<svg ",`<svg id="timeline" role="img" aria-label="Birikimli ödeme takvimi: ${esc(pc1(r.R))} nominal, ${esc(pc1(r.PVR))} bugünkü değer" style="min-width:420px;width:100%" `);
+}
+function renderCohorts(r,coh){
+  const rows=document.querySelectorAll("#cohort-body tr");
+  coh.rows.forEach((c,i)=>{
+    const tr=rows[i]; if(!tr) return;
+    const cls=v=>v>=1-1e-9?"good":"bad";
+    tr.querySelector("[data-pr]").innerHTML=`<span class="${cls(c.pr)}">${pc0(c.pr)}</span>`;
+    tr.querySelector("[data-pf]").innerHTML=`<span class="${cls(c.pf)}">${pc0(c.pf)}</span>`;
+  });
+  document.getElementById("cohort-sum").textContent =
+    `Pay başına ödeme, 16.09 değerine göre ${pc1(r.R)}. Toplam anaparanın 16.09 değerine oranı ${pc1(coh.P)}. `+
+    (r.R>=coh.P ? "Nakit toplam anaparayı karşılıyor: anapara öncelikli dağıtımda herkes anaparasını alır, kalan kazanç oranında paylaşılır."
+               : `Nakit, toplam anaparanın ${pc0(r.R/coh.P)} kadarını karşılıyor: anapara öncelikli dağıtımda herkes anaparasının bu oranını alır.`)+
+    " Tablodaki oranlar ödemenin anaparaya oranıdır.";
+}
+function scoreOf(res,obj,coh){
+  if(obj==="pv") return res.PVR;
+  if(obj==="nominal") return res.R;
+  if(obj==="speed") return -res.avgM;
+  return coh.coveredPR*10+res.PVR;
+}
+function renderCompare(){
+  const obj=document.getElementById("objective").value;
+  const excl=document.getElementById("exclSupport").checked;
+  const ap=activePreset();
+  const list=PRESETS.map(pr=>{ const res=run({...P,...pr.set}); return {pr,res,coh:cohortCalc(res.R,COH)}; });
+  const elig=list.filter(x=>!(excl && x.res.support>0.05));
+  let best=null;
+  elig.forEach(x=>{ const sc=scoreOf(x.res,obj,x.coh); if(!best||sc>best.sc) best={id:x.pr.id,sc}; });
+  const maxR=Math.max(...list.map(x=>x.res.R));
+  const tb=document.querySelector("#compare tbody");
+  tb.innerHTML=list.map(x=>{
+    const r=x.res, win=best&&best.id===x.pr.id, cur=ap===x.pr.id;
+    const dim=excl && r.support>0.05 ? ' style="opacity:.55"' : "";
+    return `<tr class="clickable${win?" win":""}${cur?" cur":""}" data-id="${x.pr.id}" tabindex="0"${dim}>
+      <td>${esc(x.pr.name)}${win?'<span class="tag">En uygun</span>':""}${cur?' <span style="color:var(--muted);font-size:.78rem">(seçili)</span>':""}</td>
+      <td class="n">${pc1(r.R)}<div class="meter"><i style="width:${(r.R/maxR*100).toFixed(1)}%"></i></div></td>
+      <td class="n">${pc1(r.PVR)}<div class="meter acc"><i style="width:${(r.PVR/maxR*100).toFixed(1)}%"></i></div></td>
+      <td class="n">${nf1.format(r.avgM)} ay</td>
+      <td class="n">${pc0(x.coh.coveredPR)}</td>
+      <td class="n">${r.support>0.05?bn(r.support)+" mlr TL":"yok"}</td></tr>`;
+  }).join("");
+  tb.querySelectorAll("tr").forEach(tr=>{
+    tr.addEventListener("click",()=>applyPreset(tr.dataset.id));
+    tr.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); applyPreset(tr.dataset.id);} });
+  });
+}
+
+// ---------- INVESTOR ----------
+const MIX_KEYS=["eq","trp","pp","dep","gov","corp","fund","oth","repo"];
+const MIX_LABELS={eq:"Hisse senedi",trp:"Ters repo",pp:"Para piyasası",dep:"Mevduat / katılma hesabı",gov:"DİBS / kamu kira sert.",corp:"Özel sektör borçlanma",fund:"Diğer fon payları",oth:"Diğer",repo:"Repo borcu (eksi)"};
+const TEMPLATES={
+  agg:Object.fromEntries(MIX_KEYS.map(k=>[k,+(BASE[k]/NAV*100).toFixed(1)])),
+  tp2:{eq:0,trp:63.2,pp:15.7,dep:2.2,gov:9.8,corp:8.1,fund:0,oth:1.0,repo:0},
+  pry:{eq:0,trp:0,pp:0,dep:0,gov:0,corp:95.9,fund:0,oth:4.1,repo:0},
+  ppf:{eq:0,trp:70,pp:15,dep:6,gov:4,corp:5,fund:0,oth:0,repo:0},
+  eqf:{eq:90,trp:0,pp:4,dep:2,gov:0,corp:0,fund:3,oth:1,repo:0},
+  mix:{eq:55,trp:15,pp:7,dep:3,gov:0,corp:10,fund:8,oth:2,repo:0}
+};
+let MIX={...TEMPLATES.agg};
+function buildMix(){
+  const host=document.getElementById("mix"); host.innerHTML="";
+  MIX_KEYS.forEach(k=>{
+    const id="m-"+k;
+    const lab=document.createElement("label"); lab.htmlFor=id; lab.textContent=MIX_LABELS[k];
+    const inp=document.createElement("input"); inp.type="number"; inp.id=id; inp.step="0.1"; inp.value=MIX[k];
+    inp.addEventListener("input",()=>{MIX[k]=parseFloat(inp.value)||0; document.getElementById("i-tpl").value="custom"; renderInvestor(lastRun);});
+    host.appendChild(lab); host.appendChild(inp);
+  });
+}
+let lastRun=null;
+function renderInvestor(r){
+  if(!r) return;
+  const units=Math.max(0,parseFloat(document.getElementById("i-units").value)||0);
+  const price=Math.max(0,parseFloat(document.getElementById("i-price").value)||0);
+  const cost=Math.max(0,parseFloat(document.getElementById("i-cost").value)||0);
+  const value=units*price, principal=units*cost;
+  const msum=MIX_KEYS.reduce((s,k)=>s+(+MIX[k]||0),0);
+  const ms=document.getElementById("mixsum");
+  ms.innerHTML=`Toplam: <b>%${nf1.format(msum)}</b>`+(Math.abs(msum-100)>0.5?` <span class="bad">Toplam 100 olmalı; hesap oranları 100'e ölçekliyor.</span>`:"");
+  const norm=msum>0?100/msum:0;
+  const events=[], rowsHtml=[];
+  let pay=0;
+  MIX_KEYS.forEach(k=>{
+    const w=(+MIX[k]||0)*norm/100; if(!w) return;
+    const tpl=document.getElementById("i-tpl").value;
+    const gk=(tpl==="tp2"&&k==="trp")?"trpT":(tpl==="tp2"&&k==="corp")?"corpRel":(tpl==="pry"&&k==="corp")?"corpOth":k;
+    const g=r.groups[gk]; if(!g||!g.book) return;
+    const scale=value*w/g.book;
+    g.ev.forEach(e=>events.push({m:e.m,a:e.a*scale}));
+    const cash=g.cash*scale; pay+=cash;
+    rowsHtml.push(`<tr><td>${esc(MIX_LABELS[k])}</td><td class="n">${tl(value*w)}</td><td class="n">${k==="repo"?"–":pc0(g.cash/g.book)}</td><td class="n">${tl(cash)}</td></tr>`);
+  });
+  const legal=Math.max(0,value-pay)*P.legalPct;
+  if(legal>0){ events.push({m:P.legalMonth,a:legal}); rowsHtml.push(`<tr><td>Hukuki tahsilat (tahmini)</td><td class="n">–</td><td class="n">–</td><td class="n">${tl(legal)}</td></tr>`); }
+  const total=pay+legal;
+  const pv=events.reduce((s,e)=>s+e.a/Math.pow(1+P.rate,e.m/12),0);
+  document.getElementById("i-pay").textContent=tl(total);
+  document.getElementById("i-pay-note").textContent=`Seçili senaryo: ${(PRESETS.find(p=>p.id===activePreset())||{name:"özel ayarlar"}).name}. Bugünkü değeri ${tl(pv)}.`;
+  const diff=total-principal;
+  document.getElementById("i-compare").innerHTML=
+    `<div><div class="v">${tl(value)}</div><div class="l">16.09 değeri (adet × fiyat)</div></div>`+
+    `<div><div class="v">${tl(principal)}</div><div class="l">Anaparanız</div></div>`+
+    `<div><div class="v ${diff>=0?"good":"bad"}">${diff>=0?"+":"−"}${tl(Math.abs(diff))}</div><div class="l">Tahmini ödeme − anapara (${principal>0?pc0(total/principal):"–"})</div></div>`;
+  const per=[["İlk 1 ay",0,1],["1–6 ay (azami tasfiye süresi)",1,6],["6–12 ay",6,12],["12 ay sonrası",12,1e9]];
+  let cum=0;
+  document.querySelector("#i-sched tbody").innerHTML=per.map(([l,a,b])=>{
+    const amt=events.filter(e=>e.m>a&&e.m<=b).reduce((s,e)=>s+e.a,0)+(a===0?events.filter(e=>e.m<=0).reduce((s,e)=>s+e.a,0):0);
+    cum+=amt;
+    return `<tr><td>${l}</td><td class="n">${tl(amt)}</td><td class="n">${tl(cum)}</td><td class="n">${principal>0?pc0(cum/principal):"–"}</td></tr>`;
+  }).join("");
+  document.querySelector("#i-buckets tbody").innerHTML=rowsHtml.join("");
+}
+
+// ---------- DATA TAB ----------
+function buildData(){
+  const facts=[
+    ["842,7 mlr TL","Tasfiyedeki fonların net değeri, 16.09.2026","TEFAS verisiyle analiz, 130 fon"],
+    ["131 fon / 7 PYŞ","Tera, Pusula, Hedef, Atlas, A1 Capital, Pardus, Bulls","SPK 2026/60 ve 2026/61 sayılı bültenler"],
+    ["455.758","Tekil yatırımcı","SPK açıklaması, MKK kayıtları"],
+    ["1,83 trn TL","7 PYŞ'nin Ağustos sonunda yönettiği toplam portföy (Haziran: 1,66 trn)","TSPB verisiyle TC Lira hesaplaması"],
+    ["132,7 mlr TL","28 Ağustos sonrası Pusula fonlarından çıkış","Ekonomim, TEFAS verisi"],
+    ["~300 mlr TL","Tera fonlarında biriken iade talebi","Tera'nın KAP açıklaması"],
+    ["%57,0","Doğrudan hisse senedi payı (ters repo ile %77,5'e kadar)","16.09 portföy dağılımı"],
+    ["%9","Fonlardaki hisselerin BIST Tüm fiili dolaşımına oranı","QNB Invest"]
+  ];
+  document.getElementById("facts").innerHTML=facts.map(([v,l,s])=>`<div class="fact"><div class="v">${v}</div><div class="l">${esc(l)}</div><div class="s">${esc(s)}</div></div>`).join("");
+  const assets=[["Hisse Senedi",480.5],["Ters-Repo",172.7],["Borsa İstanbul Para Piyasası",55.6],["Yatırım Fonları Katılma Payları",42.5],["Devlet Tahvili",23.4],["Özel Sektör Kira Sertifikaları",23.2],["Finansman Bonosu",21.3],["Mevduat (TL)",18.4],["Katılma Hesabı (TL)",13.5],["Varlığa Dayalı Menkul Kıymetler",6.2],["Vadeli İşlemler Nakit Teminatları",5.0],["BİST Taahhütlü İşlem Pazarı",3.5],["Özel Sektör Tahvili",2.2],["Kamu Kira Sertifikaları (TL)",1.0],["Girişim Sermayesi Yatırım Fonu",0.5],["Borsa Yatırım Fonları",0.4],["Takasbank Para Piyasası",0.4],["Diğer",0.3],["Repo (borç)",-28.0]];
+  document.querySelector("#assets tbody").innerHTML=assets.map(([n,v])=>`<tr><td>${esc(n)}${v>0?`<div class="meter"><i style="width:${(v/480.5*100).toFixed(1)}%"></i></div>`:""}</td><td class="n">${bn(v)}</td><td class="n">${v<0?"−":""}%${nf1.format(Math.abs(v)/NAV*100)}</td></tr>`).join("")+`<tr><td><b>Toplam (net)</b></td><td class="n"><b>842,7</b></td><td class="n"><b>%100</b></td></tr>`;
+  const pys=[["Tera",5,538.3,323299],["Atlas",16,78.0,59915],["Hedef",31,77.7,27593],["Pardus",42,70.8,40759],["Pusula",12,64.1,60357],["Bulls",15,11.4,5636],["A1 Capital",9,2.4,1540]];
+  document.querySelector("#pys tbody").innerHTML=pys.map(([n,f,v,i])=>`<tr><td>${n}</td><td class="n">${f}</td><td class="n">${bn(v)}</td><td class="n">%${nf1.format(v/NAV*100)}</td><td class="n">${nf0.format(i)}</td></tr>`).join("");
+  const top=[["TLY","Tera Portföy Birinci Serbest Fon",243.6,102616],["TP2","Tera Portföy Para Piyasası (TL) Fonu",224.4,167000],["DOH","Tera Portföy Dördüncü Hisse Senedi Serbest (TL) Fon",45.3,41799],["DFI","Atlas Portföy Serbest Fon",31.3,47521],["PKZ","Pusula Portföy Kuzey Hisse Senedi Serbest (TL) Fon",27.8,16],["PSE","Atlas Portföy Para Piyasası Serbest Fon",22.8,5636],["T3B","Tera Portföy Üçüncü Hisse Senedi Serbest (TL) Fon",20.7,18],["PRY","Pusula Portföy Para Piyasası (TL) Fonu",18.9,39320],["ABG","Atlas Portföy Dördüncü Serbest (TL) Fon",17.7,181],["KSA","Hedef Portföy Kısa Vadeli Serbest Fon",16.4,4180]];
+  document.querySelector("#top10 tbody").innerHTML=top.map(([c,n,v,i])=>`<tr><td><b>${c}</b></td><td>${esc(n)}</td><td class="n">${bn(v)}</td><td class="n">${nf0.format(i)}</td></tr>`).join("");
+  const ev=[
+    ["28.08.2026","SPK, 52/1589 sayılı kararla Yatırım Fonlarına İlişkin Rehber'i değiştirdi. Serbest fonlara fiili dolaşım oranına bağlı hisse yoğunlaşma sınırları getirildi (örneğin fiili dolaşımı %25'in altındaki şirketlerde en fazla %8). Para piyasası fonlarına DİBS ve kira sertifikası zorunluluğu, haftalık KAP açıklaması şartı geldi. Yürürlük 29.08; aşımların 31.12.2026'ya kadar kademeli azaltılması istendi."],
+    ["Ağu–Eyl","Fonların büyük pozisyon taşıdığı sığ hisselerde art arda taban fiyatlar görüldü. Fon fiyatı düştükçe iade talepleri hızlandı, iadeler için yeni satış gerekti. 28 Ağustos sonrası Pusula fonlarından yaklaşık 132,7 milyar TL çıktı."],
+    ["09.09.2026","Tera Yatırım, Pusula Finans Holding ve bağlı şirketlerini devralmak üzere görüşmelere başladığını duyurdu."],
+    ["15.09.2026","Pusula Portföy, bazı fonlarında katılma payı iade ödemelerinde temerrüt oluştuğunu açıkladı."],
+    ["15–17.09","Tera Portföy'ün iki fonunda benzer ödeme sorunu yaşandı; likidite sorunu ardından Atlas Portföy'e de yansıdı."],
+    ["17.09.2026","SPK, 7 PYŞ'nin TEFAS'taki tüm fonlarını alım satıma kapattı ve 131 fonun tasfiyesine karar verdi (2026/60 ve 2026/61 sayılı bültenler, 57/1707 sayılı karar). Tera fonları için İş Bankası, diğerleri için Ziraat Bankası saklayıcı ve tasfiye yetkilisi oldu. Süre başlangıçta en fazla 3 ay."],
+    ["20.09.2026","SPK, 59/1710 sayılı kararla tasfiye usul ve esaslarının A/8 maddesindeki 3 aylık süreyi 6 aya çıkardı (2026/62 sayılı bülten). Amaç, varlıkların portföy yapıları ve piyasa koşulları dikkate alınarak mümkün olduğunca uygun koşullarda satılması; Kurula göre tasfiye daha erken de tamamlanabilir. Diğer usul ve esaslar değişmedi."],
+    ["18.09.2026","Tera, iade taleplerinin yaklaşık 300 milyar TL'ye ulaştığını ve Takasbank hesabına getirilen kısıtlar nedeniyle ödemelere devam edemediğini açıkladı."],
+    ["19.09.2026","Tera ve Pusula yöneticileri hakkında gözaltı kararları verildi; İstanbul Cumhuriyet Başsavcılığı soruşturması genişledi."],
+    ["23.09.2026","SPK, 131 fondaki tekil yatırımcı sayısını MKK kayıtlarına göre 455.758 olarak açıkladı."],
+    ["28.09.2026","SPK tasfiye süresine ilişkin basın duyurusu: 17.09'da iletilip iptal edilen talimat sahiplerine tasfiye bakiyesinden katılma payı oranında ödeme yapılacak; 16.09 ve öncesinde iletilip temerrüt nedeniyle gerçekleşmeyen talimatlar da tasfiye kapsamında."]
+  ];
+  document.getElementById("events").innerHTML=ev.map(([d,t])=>`<li><time>${d}</time><span>${esc(t)}</span></li>`).join("");
+}
+
+
+// ---------- COUNTERFACTUAL: fonlar kapatılmasaydı ----------
+const CF_DEF={q0:0.04,beta:0.4,qmax:0.25,qDef:0.15,kDL:0.02,kDI:0.08,lockFrac:0.07,exo:0.02,pFL:0.85,pFI:0.30,gate:0.02,suspendDays:42,days:126,spMonths:12,spPart:0.3,swingBeta:0.4,calm:0.5};
+let C={...CF_DEF}; let CFREG="run";
+try{ const s=JSON.parse(localStorage.getItem("tasfiye-masasi-v4")||"null"); if(s&&s.C) C={...CF_DEF,...s.C}; if(s&&s.CFREG) CFREG=s.CFREG; }catch(e){}
+const CF_REGIMES=[
+  {id:"liq",name:"17.09 tasfiye (gerçekleşen)",desc:"Gerçekleşen yol: 17.09'da TEFAS'ta işlemler durur, varlıklar tasfiye süresi içinde borsada satılır. Nakit aylık dilimler halinde tüm yatırımcılara katılma payı oranında ödenir; ilk çıkan ile sona kalan aynı oranı alır."},
+  {id:"run",name:"Müdahale yok",desc:"Fonlar TEFAS'ta açık kalır. İade talimatları yayımlanan fiyattan, izahnamedeki valörde nakit ödenir. Nakit ve likit hisseler bitince sığ hisseler tabanda satılamaz, fon temerrüde düşer. Ödenemeyen talimatlar sıraya girer ve sonradan gelen nakitle sırayla ödenir; fonda kalanlar geriye kalanı paylaşır."},
+  {id:"gate",name:"Günlük iade kotası",desc:"Fon açık kalır ama her gün en fazla dolaşımdaki payların belirli bir oranı kadar iade ödenir. Fazla talepler ertesi güne devreder ve sırası geldiğinde o günün fiyatından ödenir. Zorunlu satış hızı düşer, temerrüt yaşanmaz ama bayat fiyat sorunu sürer."},
+  {id:"swing",name:"Adil fiyattan iade",desc:"Fon açık kalır; çıkanlara yayımlanan fiyat yerine varlıkların gerçekte satılabileceği değer ödenir (swing pricing benzeri). Erken çıkmanın avantajı kalkar, panik azalır. Türk fon mevzuatında yaygın bir araç değildir; uygulanması düzenleme gerektirir."},
+  {id:"suspend",name:"Geçici durdurma ve yeni yönetim",desc:"Alım satım belirli bir süre durdurulur, fon yönetimi başka bir PYŞ'ye devredilir. Bu sürede varlıklar sakin bir hızla satılır ve fiyat gerçekleşebilir değere göre yeniden belirlenir. Fon yeniden açıldığında iadeler bu fiyattan nakit ödenir."},
+  {id:"side",name:"Yan cep (side pocket)",desc:"Sığ hisseler, hisse teminatlı ters repo ve özel sektör alacakları ayrı, kapalı bir cebe alınır. Nakit ve likit kısım hemen herkese payı oranında ödenir. Yan cepteki varlıklar belirlenen sürede sakin satılır, gelir aylık dağıtılır."},
+  {id:"inkind",name:"Ayni iade",desc:"İade eden yatırımcıya nakit ve likit kısım nakit, sığ hisse kısmı hisse olarak verilir. Herkes kendi dilimini alır ve kimse diğerinin aleyhine çıkamaz; ancak satış baskısı yatırımcıların kendisine geçer."}
+];
+const CF_CONTROLS=[
+  {k:"q0",l:"Taban iade oranı",min:0,max:0.1,step:0.005,f:"pday",h:"Kalibrasyon: Pusula fonlarından 28.08 sonrası ~13 iş gününde 132,7 mlr çıkış; PRY bir ayda 111 mlr TL düzeyinden 18,9 mlr TL düzeyine indi. Kriz içi aralık %4–8/gün."},
+  {k:"beta",l:"Panik duyarlılığı",min:0,max:1.5,step:0.05,f:"x",h:"Fiyattaki her %10 düşüşün günlük iade oranına eklediği pay × 10."},
+  {k:"qDef",l:"Temerrüt sonrası günlük iade oranı",min:0,max:0.4,step:0.01,f:"pday"},
+  {k:"kDI",l:"Sığ hissede satış kapasitesinin fiyat etkisi",min:0.01,max:0.3,step:0.01,f:"pct",h:"Günlük kapasitenin tamamını satmanın o günkü fiyat düşüşü."},
+  {k:"lockFrac",l:"Taban kilidinde satılabilen hacim",min:0.01,max:1,step:0.01,f:"pct",h:"Veri: DSTKF 18.09 taban günü 0,18 mlr TL hacim; 3 aylık ortalama 2,65 mlr TL (≈%7)."},
+  {k:"exo",l:"Stres günlerinde ek fiyat baskısı",min:0,max:0.06,step:0.005,f:"pday",h:"Piyasanın fon satışını öngörüp önden satması."},
+  {k:"pFI",l:"Sığ hisselerde temel değer tabanı",min:0.05,max:0.8,step:0.01,f:"pct",h:"16.09 fiyatına göre; bu seviyede alıcılar devreye girer."},
+  {k:"gate",l:"Günlük iade kotası",min:0.005,max:0.1,step:0.005,f:"pday"},
+  {k:"suspendDays",l:"Durdurma süresi",min:5,max:126,step:1,f:"days"},
+  {k:"calm",l:"Yeniden açılışta panik çarpanı",min:0.1,max:1,step:0.05,f:"x"},
+  {k:"swingBeta",l:"Adil fiyatta panik çarpanı",min:0,max:1,step:0.05,f:"x"},
+  {k:"spMonths",l:"Yan cep satış süresi",min:3,max:24,step:1,f:"months"},
+  {k:"days",l:"Simülasyon süresi",min:63,max:252,step:21,f:"days"}
+];
+FMT.pday=v=>"%"+nf1.format(v*100)+"/gün";
+
+const MIX_ALL=Object.fromEntries(Object.keys(MIX_TP2).map(k=>[k,(MIX_TP2[k]*TRP.tp2+MIX_OTH[k]*TRP.oth)/(TRP.tp2+TRP.oth)]));
+function cfInit(p){
+  const L0=BASE.eq*(1-p.illiqShare), I0=BASE.eq*p.illiqShare;
+  return {cash:BASE.pp+BASE.dep+BASE.gov+BASE.oth+BASE.repo, L:L0, I:I0, L0, I0, pL:1, pI:1,
+    trp0:BASE.trp, trpOut:BASE.trp, relX:0, relFundX:0, corp:BASE.corp, fund:BASE.fund, units:1,
+    capL:L0/p.dL, capI:I0/p.dI, lockL:false, lockI:false, defaulted:false};
+}
+function cfSeize(p,S){ // karşı taraf ödemezse teminata el konur; teminat alacaktan fazlaysa fazlası iade
+  const rem=S.trpOut, f=rem*Math.min(1,p.coverage);
+  S.cash+=f*MIX_ALL.dibs*p.govRec+f*MIX_ALL.other*p.othRec;
+  S.L+=f*MIX_ALL.liq; S.I+=f*MIX_ALL.ill; S.relX+=f*MIX_ALL.relDebt; S.relFundX+=f*MIX_ALL.relFund; S.trpOut=0;
+}
+function cfRealize(q,p0,cap,k,pF,days){
+  // aynı fiyat dinamiğiyle, kalan pozisyonun 'days' günde sakin satışı; satılamayan kısım taban değerden
+  if(q<=1e-9) return p0;
+  let p=p0, rem=q, val=0;
+  for(let i=0;i<days&&rem>1e-9;i++){ const s=Math.min(rem,cap,rem/(days-i)); val+=s*p; rem-=s; p=Math.max(pF,p*(1-Math.min(0.10,k*s/cap))); }
+  return (val+rem*Math.min(p,pF))/q;
+}
+function cfPR(p,S,w){
+  if(w==="L") return cfRealize(S.L,S.pL,S.capL,C.kDL,C.pFL,63);
+  return cfRealize(S.I,S.pI,S.capI,C.kDI,C.pFI,63);
+}
+function cfFair(p,S){
+  const prL=cfPR(p,S,"L"), prI=cfPR(p,S,"I");
+  const cpLeft=Math.max(0,S.trpOut-S.trp0*(1-p.cpPay));
+  const cv=MIX_ALL.dibs*p.govRec+MIX_ALL.liq*prL+MIX_ALL.ill*prI+MIX_ALL.relDebt*p.corpRelRec+MIX_ALL.relFund*p.relFundRec+MIX_ALL.other*p.othRec;
+  const trp=cpLeft+(S.trpOut-cpLeft)*Math.min(1,p.coverage*cv);
+  const rel=S.corp*p.corpRelShare;
+  const eqIdx=(S.L0*prL+S.I0*prI)/(S.L0+S.I0);
+  return {cash:S.cash, eq:S.L*prL+S.I*prI+trp, corpOth:(S.corp-rel)*p.corpOthRec, corpRel:(rel+S.relX)*p.corpRelRec+S.relFundX*p.relFundRec, fund:S.fund*eqIdx};
+}
+const cfFairTot=(p,S)=>{const f=cfFair(p,S);return f.cash+f.eq+f.corpOth+f.corpRel+f.fund;};
+function cfRep(S){ const idx=(S.L0*S.pL+S.I0*S.pI)/(S.L0+S.I0); return S.cash+S.L*S.pL+S.I*S.pI+S.trpOut+S.corp+S.relX+S.relFundX+S.fund*idx; }
+function cfSell(S,need,mL,mI,t){
+  if(need>0&&S.L>1e-9&&mL>0){ const cap=S.capL*(S.lockL?C.lockFrac:1)*mL-t.sL; const q=Math.max(0,Math.min(S.L,cap,need/S.pL)); S.L-=q; S.cash+=q*S.pL; t.sL+=q; need-=q*S.pL; }
+  if(need>0&&S.I>1e-9&&mI>0){ const cap=S.capI*(S.lockI?C.lockFrac:1)*mI-t.sI; const q=Math.max(0,Math.min(S.I,cap,need/S.pI)); S.I-=q; S.cash+=q*S.pI; t.sI+=q; need-=q*S.pI; }
+  return need;
+}
+function cfPrices(S,t,stress){
+  const dL=Math.min(0.10,C.kDL*t.sL/S.capL);
+  const nL=Math.max(C.pFL,S.pL*(1-dL)); S.lockL=dL>=0.099&&nL>C.pFL; if(S.pL>C.pFL) S.pL=nL;
+  const dI=Math.min(0.10,C.kDI*t.sI/S.capI+(stress?C.exo:0));
+  const nI=Math.max(C.pFI,S.pI*(1-dI)); S.lockI=dI>=0.099&&nI>C.pFI; if(S.pI>C.pFI) S.pI=nI;
+}
+function payTo(g,d,a,res){ if(a<=1e-12) return; g.pays.push({d,a}); res.events.push({d,a}); }
+function cfInKind(p,S){
+  const res={events:[],groups:[],path:[],defaultDay:null,maxQueue:0};
+  const all={units:1,pays:[]}, c=1-p.costPct;
+  const repBefore=cfRep(S), fairBefore=cfFairTot(p,S);
+  const cp=S.trp0*p.cpPay; S.trpOut=S.trp0-cp; S.cash+=cp; cfSeize(p,S);
+  const prL=cfRealize(S.L,1,S.capL,C.kDL,C.pFL,21);
+  const prI=cfRealize(S.I,1,S.capI,C.kDI,C.pFI,63); // yatırımcılar hisseyi kendileri satar; piyasa aynı hacmi emer
+  payTo(all,5,(S.cash+S.L*prL)*c,res);
+  payTo(all,10,S.I*prI*c,res);
+  const rel=S.corp*p.corpRelShare;
+  payTo(all,126,(S.corp-rel)*p.corpOthRec*c,res); payTo(all,378,(rel+S.relX)*p.corpRelRec*c,res); payTo(all,252,S.relFundX*p.relFundRec*c,res);
+  payTo(all,84,S.fund*((S.L0*prL+S.I0*prI)/(S.L0+S.I0))*c,res);
+  res.groups.push(all);
+  for(let d=0;d<=C.days;d+=3) res.path.push({d,rep:d<10?repBefore/NAV:0,fair:d<10?fairBefore/NAV:0,units:d<10?1:0});
+  return res;
+}
+function simCF(reg,p){
+  const S=cfInit(p);
+  if(reg==="inkind") return cfInKind(p,S);
+  const res={events:[],groups:[],path:[],defaultDay:null,maxQueue:0};
+  const all={units:1,pays:[]};
+  let queue=[], pend=0, reopenFair=null;
+  const H=p.horizon*21;
+  const T=reg==="side"?Math.round(C.spMonths*21):reg==="liq"?Math.max(C.days,H):C.days;
+  for(let d=1;d<=T;d++){
+    const t={sL:0,sI:0};
+    if(d<=5){ const r=S.trp0*p.cpPay/5; S.cash+=r; S.trpOut-=r; }
+    if(d===6&&S.trpOut>1e-9) cfSeize(p,S);
+    const qTot=queue.reduce((s,x)=>s+x.amt,0);
+    const rep=cfRep(S)-qTot, fair=cfFairTot(p,S)-qTot;
+    const repU=S.units>1e-9?rep/S.units:0, fairU=S.units>1e-9?fair/S.units:0;
+    res.path.push({d,rep:repU/NAV,fair:fairU/NAV,units:S.units});
+    let stress=S.defaulted;
+    if(reg==="liq"||reg==="side"){
+      cfSell(S,S.L*S.pL,1,0,t);
+      const rem=(reg==="liq"?H:T)-d+1;
+      const tgt=rem>0?S.I/rem:S.I;
+      cfSell(S,tgt*S.pI,0,reg==="liq"?1:C.spPart,t);
+      stress=reg==="liq"&&t.sI>0;
+      if(d%21===0){ payTo(all,d,S.cash*(1-p.costPct),res); S.cash=0; }
+    } else if(reg==="suspend"&&d<=C.suspendDays){
+      cfSell(S,S.L*S.pL,1,0,t);
+      cfSell(S,S.I*S.pI,0,C.spPart,t);
+      stress=false;
+    } else {
+      const fairPx=reg==="swing"||reg==="suspend";
+      const px=Math.max(0,fairPx?fairU:repU);
+      let drop;
+      if(reg==="suspend"){ if(reopenFair===null) reopenFair=fairU; drop=Math.max(0,1-fairU/Math.max(reopenFair,1e-9)); }
+      else drop=Math.max(0,1-repU/NAV);
+      const b=C.beta*(reg==="swing"?C.swingBeta:1);
+      const q0=C.q0*(reg==="suspend"?C.calm:1);
+      let q=Math.min(C.qmax,q0+b*drop); if(S.defaulted) q=Math.max(q,C.qDef);
+      if(px<=1e-9) q=0; // fiyat sıfır veya negatif: iade anlamsız, kalanlar tasfiye bakiyesini bekler
+      if(reg==="gate"){
+        pend+=q*(S.units-pend);
+        const payU=Math.min(pend,C.gate*S.units);
+        cfSell(S,payU*px-S.cash,1,1,t);
+        const paidU=Math.min(payU,S.cash/Math.max(px,1e-9));
+        if(paidU>1e-12){ const g={units:paidU,pays:[]}; res.groups.push(g); payTo(g,d,paidU*px,res); S.cash-=paidU*px; S.units-=paidU; pend-=paidU; }
+      } else {
+        const reqU=q*S.units, amt=reqU*px;
+        cfSell(S,qTot+amt-S.cash,1,1,t);
+        for(const x of queue){ if(S.cash<=1e-12) break; const a=Math.min(x.amt,S.cash); payTo(x.g,d,a,res); x.amt-=a; S.cash-=a; }
+        queue=queue.filter(x=>x.amt>1e-9);
+        const g={units:reqU,pays:[]}; res.groups.push(g);
+        const paid=Math.min(amt,Math.max(0,S.cash)); payTo(g,d,paid,res); S.cash-=paid;
+        if(amt-paid>1e-9){ queue.push({g,amt:amt-paid}); if(!S.defaulted){ S.defaulted=true; res.defaultDay=d; } }
+        S.units-=reqU;
+      }
+      stress=S.defaulted||t.sI>0;
+    }
+    cfPrices(S,t,stress);
+    res.maxQueue=Math.max(res.maxQueue,queue.reduce((s,x)=>s+x.amt,0));
+  }
+  const f=cfFair(p,S), c=1-p.costPct;
+  const parts=[{d:T,a:f.cash},{d:T+42,a:f.eq},{d:T+63,a:f.fund},{d:Math.max(T+21,126),a:f.corpOth},{d:Math.max(T+21,378),a:f.corpRel}];
+  const remG=(reg==="liq"||reg==="side")?all:{units:S.units,pays:[]};
+  for(const part of parts){
+    let a=part.a*c;
+    for(const x of queue){ if(a<=1e-12) break; const k=Math.min(x.amt,a); payTo(x.g,part.d,k,res); x.amt-=k; a-=k; }
+    queue=queue.filter(x=>x.amt>1e-9);
+    payTo(remG,part.d,a,res);
+  }
+  if(remG.units>1e-9) res.groups.push(remG);
+  return res;
+}
+function cfMetrics(res,p){
+  const total=res.events.reduce((s,e)=>s+e.a,0);
+  const pv=res.events.reduce((s,e)=>s+e.a/Math.pow(1+p.rate,e.d/252),0);
+  const pos=res.events.filter(e=>e.a>0);
+  const avgD=pos.reduce((s,e)=>s+e.a*e.d,0)/Math.max(1e-9,pos.reduce((s,e)=>s+e.a,0));
+  const gs=res.groups.filter(g=>g.units>1e-7).map(g=>({u:g.units,v:g.pays.reduce((s,x)=>s+x.a,0)/(g.units*NAV)}));
+  const sl=(arr,frac)=>{let need=frac,s=0,w=0;for(const g of arr){if(need<=0)break;const k=Math.min(need,g.u);s+=k*g.v;w+=k;need-=k;}return w?s/w:0;};
+  const first=sl(gs,0.25), last=sl([...gs].reverse(),0.25);
+  const full=gs.filter(g=>g.v>=0.95).reduce((s,g)=>s+g.u,0);
+  return {total,R:total/NAV,PVR:pv/NAV,avgM:avgD/21,gs,first,last,full,defaultDay:res.defaultDay,maxQueue:res.maxQueue,path:res.path};
+}
+function buildCF(){
+  const host=document.getElementById("regimes");
+  CF_REGIMES.forEach(r=>{ const b=document.createElement("button"); b.type="button"; b.className="preset"; b.dataset.id=r.id; b.textContent=r.name; b.addEventListener("click",()=>{CFREG=r.id;renderCF();save();}); host.appendChild(b); });
+  const g=document.getElementById("cf-ctl");
+  CF_CONTROLS.forEach(it=>{
+    const w=document.createElement("div"); w.className="ctl"; const id="cf-"+it.k;
+    w.innerHTML=`<label for="${id}"><span>${esc(it.l)}</span><output></output></label><input type="range" id="${id}" min="${it.min}" max="${it.max}" step="${it.step}" value="${C[it.k]}">${it.h?`<small>${esc(it.h)}</small>`:""}`;
+    const inp=w.querySelector("input"), out=w.querySelector("output"); out.textContent=FMT[it.f](C[it.k]);
+    inp.addEventListener("input",()=>{C[it.k]=parseFloat(inp.value); out.textContent=FMT[it.f](C[it.k]); renderCF(); save();});
+    g.appendChild(w);
+  });
+  document.getElementById("cf-objective").addEventListener("change",renderCF);
+}
+function cfDistSVG(m,bench){
+  const W=560,H=280,ml=44,mr=12,mt=14,mb=34,iw=W-ml-mr,ih=H-mt-mb;
+  const ymax=Math.max(1.1,...m.gs.map(g=>g.v))*1.02;
+  const x=u=>ml+u*iw, y=v=>mt+ih-Math.min(v,ymax)/ymax*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  const ticks=[0,0.25,0.5,0.75,1,1.25,1.5].filter(t=>t<=ymax);
+  ticks.forEach(t=>{s+=`<line class="gl" x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}"/><text x="${ml-6}" y="${y(t)+4}" text-anchor="end">%${Math.round(t*100)}</text>`;});
+  [0,0.25,0.5,0.75,1].forEach(u=>{s+=`<text x="${x(u)}" y="${H-mb+16}" text-anchor="middle">%${u*100}</text>`;});
+  s+=`<text x="${W-mr}" y="${H-4}" text-anchor="end">katılma payları, çıkış sırasına göre</text>`;
+  let cu=0,d=`M${x(0)},${y(0)}`;
+  m.gs.forEach(g=>{ d+=` L${x(cu)},${y(g.v)}`; cu+=g.u; d+=` L${x(cu)},${y(g.v)}`; });
+  d+=` L${x(cu)},${y(0)} Z`;
+  s+=`<path class="area-dist" d="${d}"/>`;
+  s+=`<line class="ln-par" x1="${ml}" x2="${W-mr}" y1="${y(1)}" y2="${y(1)}"/><text x="${W-mr}" y="${y(1)-4}" text-anchor="end">16.09 değeri</text>`;
+  s+=`<line class="ln-bench" x1="${ml}" x2="${W-mr}" y1="${y(bench)}" y2="${y(bench)}"/><text x="${ml+4}" y="${y(bench)-4}">tasfiye: %${nf0.format(bench*100)}</text>`;
+  s+=`<line class="ax" x1="${ml}" x2="${W-mr}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  return s;
+}
+function cfNavSVG(m){
+  const W=560,H=280,ml=44,mr=12,mt=14,mb=34,iw=W-ml-mr,ih=H-mt-mb;
+  const pts=m.path.filter(q=>q.units>1e-6||q.d<=1);
+  const maxD=Math.max(21,...m.path.map(q=>q.d));
+  const x=dd=>ml+dd/maxD*iw, y=v=>mt+ih-Math.max(0,Math.min(1.1,v))/1.1*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  [0,0.25,0.5,0.75,1].forEach(t=>{s+=`<line class="gl" x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}"/><text x="${ml-6}" y="${y(t)+4}" text-anchor="end">%${t*100}</text>`;});
+  for(let dd=0;dd<=maxD;dd+=21){ s+=`<text x="${x(dd)}" y="${H-mb+16}" text-anchor="middle">${Math.round(dd/21)}</text>`; }
+  s+=`<text x="${W-mr}" y="${H-4}" text-anchor="end">ay</text>`;
+  const line=(k)=>pts.map((q,i)=>(i?"L":"M")+x(q.d)+","+y(q[k])).join(" ");
+  if(pts.length>1){ s+=`<path class="ln-units" d="${line("units")}"/><path class="ln-fair" d="${line("fair")}"/><path class="ln-rep" d="${line("rep")}"/>`; }
+  s+=`<line class="ax" x1="${ml}" x2="${W-mr}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  return s;
+}
+function renderCF(){
+  const p=P;
+  const all=CF_REGIMES.map(r=>({r,m:cfMetrics(simCF(r.id,p),p)}));
+  const bench=all.find(x=>x.r.id==="liq").m.R;
+  document.querySelectorAll("#regimes .preset").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===CFREG?"true":"false"));
+  const cur=all.find(x=>x.r.id===CFREG)||all[0];
+  document.getElementById("regime-desc").textContent=cur.r.desc;
+  const m=cur.m;
+  const gap=m.first-m.last;
+  let v=`Bu yolda yatırımcılara toplam <span class="num">${bn(m.total)} milyar TL</span> dönüyor (16.09 değerine göre ${pc1(m.R)}, bugünkü değerle ${pc1(m.PVR)}). `;
+  if(Math.abs(gap)<0.01) v+=`Herkes pay başına aynı oranı alıyor.`;
+  else v+=`İlk çıkan %25 pay başına ${pc0(m.first)}, sona kalan %25 ise ${pc0(m.last)} alıyor.`;
+  if(m.defaultDay) v+=` Fon ${m.defaultDay}. işlem gününde ödemeleri karşılayamıyor.`;
+  document.getElementById("cf-verdict").innerHTML=v;
+  const kp=[[pc1(m.R),"Nominal geri dönüş"],[pc1(m.PVR),"Bugünkü değerle geri dönüş"],[pc0(m.first)+" / "+pc0(m.last),"İlk çıkan / sona kalan %25, pay başına"],[pc0(m.full),"16.09 değerinin en az %95'ini alan paylar"]];
+  document.getElementById("cf-kpis").innerHTML=kp.map(([a,b])=>`<div class="kpi"><div class="v">${a}</div><div class="l">${b}</div></div>`).join("");
+  const ds=document.getElementById("cf-dist"); ds.outerHTML=cfDistSVG(m,bench).replace("<svg ",`<svg id="cf-dist" role="img" aria-label="Çıkış sırasına göre pay başına ödeme" style="min-width:420px;width:100%" `);
+  const ns=document.getElementById("cf-nav"); ns.outerHTML=cfNavSVG(m).replace("<svg ",`<svg id="cf-nav" role="img" aria-label="Yayımlanan fiyat ve gerçek değer" style="min-width:420px;width:100%" `);
+  const obj=document.getElementById("cf-objective").value;
+  const score=x=>obj==="pv"?x.m.PVR:obj==="equal"?-Math.abs(x.m.first-x.m.last)+x.m.PVR*0.01:Math.round(x.m.last*100)/100+x.m.PVR*0.01;
+  let best=all.reduce((a,b)=>score(b)>score(a)?b:a);
+  document.querySelector("#cf-compare tbody").innerHTML=all.map(x=>{
+    const q=x.m, win=x===best, c=x.r.id===CFREG;
+    return `<tr class="clickable${win?" win":""}${c?" cur":""}" data-id="${x.r.id}" tabindex="0"><td>${esc(x.r.name)}${win?'<span class="tag">En uygun</span>':""}</td><td class="n">${pc1(q.R)}</td><td class="n">${pc1(q.PVR)}</td><td class="n">${pc0(q.first)}</td><td class="n">${pc0(q.last)}</td><td class="n ${Math.abs(q.first-q.last)>0.1?"bad":""}">${nf0.format((q.first-q.last)*100)} puan</td><td class="n">${q.defaultDay?q.defaultDay+". gün":"yok"}</td><td class="n">${nf1.format(q.avgM)} ay</td></tr>`;
+  }).join("");
+  document.querySelectorAll("#cf-compare tbody tr").forEach(tr=>{
+    const go=()=>{CFREG=tr.dataset.id;renderCF();save();};
+    tr.addEventListener("click",go); tr.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});
+  });
+}
+
+
+// ---------- VERİ DEFTERİ ----------
+const ST={veri:["st-veri","Veri"],tur:["st-tur","Türetilmiş"],vek:["st-vek","Vekil"],var:["st-var","Varsayım"]};
+const f1=v=>nf1.format(v), fp=v=>FMT.pct(v), fs=v=>FMT.spct(v);
+const LEDGER=[
+  ["Fon değeri ve varlık dağılımı",()=>"842,7 mlr TL","veri","TEFAS 16.09.2026 kapanışı, 130 fonun büyüklük × portföy dağılımı (açık kaynak analiz deposu)","Tasfiye bankalarının açılış bilançosu (İş Bankası, Ziraat Bankası)"],
+  ["Azami tasfiye süresi",()=>"6 ay (modelde: "+FMT.months(P.horizon)+")","veri","Kurulun 20.09.2026 tarih ve 59/1710 sayılı kararı: A/8 maddesindeki 3 aylık süre 6 aya çıkarıldı; daha erken tamamlanabilir","Tasfiye yetkililerinin satış takvimi ve ara dağıtım açıklamaları"],
+  ["Ters repo toplamı",()=>"172,7 mlr TL","veri","TEFAS 16.09 dağılımı","—"],
+  ["TP2 ters repo tutarı",()=>"141,8 mlr TL","tur","TP2 büyüklüğü 224,4 mlr × ters repo payı %63,17 (16.09)","—"],
+  ["TP2 teminat dağılımı",()=>"DSTKF %39,7, grup borcu %22, DİBS %22,3, TPKGY %15,4","veri","KAP portföy dağılım raporu 31.08.2026","16.09 tarihli teminat listesi (ters repo her gün yenilendiği için teminat değişmiş olabilir)"],
+  ["TLY ters repo teminatı (6,5 mlr)",()=>"TPKGY %100","veri","TLY 31.08 raporu: 19,9 mlr ters repo, teminat TPKGY; 16.09'da ters repo payı %2,67 (6,5 mlr)","16.09 teminat listesi"],
+  ["Kalan ters repo teminatı (24,4 mlr)",()=>"sığ hisse %70, DİBS %19, likit %10","vek","PRY 31.08 raporu (PRY'nin 16.09'da ters reposu yok)","PSE, KSA, DFI ve diğer fonların portföy raporları"],
+  ["Teminat / alacak oranı",()=>FMT.ratio(P.coverage),"tur","31.08: 128,4 mlr teminat, 128 mlr alacak","Ters repo sözleşmelerindeki marj/haircut oranları"],
+  ["Karşı tarafın nakit ödeme oranı",()=>fp(P.cpPay),"var","Karşı taraf ilişkili aracı kurum; habere göre Tera tarafının toplam kaynakları ~26 mlr TL, TP2 alacağı 141,8 mlr TL: üst sınır ~%18","Tera Yatırım Menkul Değerler'in 30.09 bilançosu ve tasfiye bankasının tahsilat açıklaması"],
+  ["Grup fonu/GYO teminatı tahsilatı",()=>fp(P.relFundRec),"var","TPKGY kaleminin niteliği teyit edilemedi","KAP'taki ISIN ve ilgili fonun/ortaklığın net aktif değeri"],
+  ["Sığ hisse payı",()=>fp(P.illiqShare),"var","Alt sınır veriden: TLY'nin 31.08 hisse portföyünün ~%97'si grup ve sığ hisselerde (DSTKF, OZATD, TEHOL, TRHOL, PEKGY, ANELE, SELEC, BIGEN, TERA; ~205 mlr TL), bu tek başına 480,5 mlr'lik hisse portföyünün %43'ü. Kalanı diğer fonların hisse yoğun serbest fonları için varsayım","129 fonun hisse bazında dökümü × hisse başına hacim"],
+  ["Sığ hisselerde 16.09 sonrası değişim",()=>fs(P.mdI),"var","Tek hisse verisi: DSTKF 16.09 2.448 TL, 18.09 1.984 TL (iki taban, −%19)","Tasfiyedeki hisselerin güncel kapanışları"],
+  ["Likit hisselerde 16.09 sonrası değişim",()=>fs(P.mdL),"var","Genel piyasa düşüşü","BIST 30 ve fonların likit hisselerinin güncel fiyatları"],
+  ["Sığ pozisyonun erime süresi",()=>FMT.days(P.dI),"tur","DSTKF: 27 gün; yoğunlaşma oranlarıyla 16–155 gün, medyan 43; küçük hisselerde hacim daha düşük","Hisse bazında 3 aylık ortalama hacim"],
+  ["Likit pozisyonun erime süresi",()=>FMT.days(P.dL),"var","BIST 30 hisselerinde fon payları dolaşımın küçük bir kısmı","Hisse bazında hacim"],
+  ["Fiyat etkisi katsayıları",()=>nf2.format(P.kL)+" / "+nf2.format(P.kI),"var","Karekök fiyat etkisi modelinin literatürdeki tipik aralığı","Tasfiye satışlarının gerçekleşen fiyat etkisinden kalibrasyon"],
+  ["Blok satış, taban fiyat, ayni dağıtım parametreleri",()=>fp(P.blockDiscI)+" iskonto, "+fp(P.floorPrice)+" taban","var","Politika tasarım parametreleri","Alıcı konsorsiyumu teklifleri, ihale sonuçları"],
+  ["Özel sektör borcunda ilişkili taraf payı",()=>fp(P.corpRelShare),"tur","Alt sınır veriden: 16.09'da TP2'nin kira sertifikaları 12,4 mlr (31.08'de %95'i Tera Varlık Kiralama), TLY'nin bono ve kira sertifikaları 19,2 mlr (31.08'de tamamı Tera Yatırım Bankası ve Tera Varlık Kiralama). 52,9 mlr'nin en az 31,6 mlr'si (%60) grup ihracı; PRY'nin 17,4 mlr'lik kaleminin ihraççıları henüz bilinmiyor","PRY ve diğer fonların Eylül portföy raporları"],
+  ["Borçlanma araçları tahsilat oranları",()=>fp(P.corpRelRec)+" / "+fp(P.corpOthRec),"var","İlişkili ihraççıların grup temerrüdüyle ilişkisi","İhraççıların ödeme performansı ve bilançoları"],
+  ["DİBS ve diğer kalemler tahsilatı",()=>fp(P.govRec)+" / "+fp(P.othRec),"var","Piyasa değerinden küçük sapma","Tasfiye satış fiyatları"],
+  ["Tasfiye maliyeti",()=>FMT.pct1(P.costPct),"var","Komisyon, saklama, hukuk giderleri","Tasfiye bankalarının ücret tarifesi"],
+  ["Hukuki tahsilat",()=>fp(P.legalPct)+", "+FMT.months(P.legalMonth),"var","Soruşturmada malvarlığı tedbirleri ve iadeler var; toplam tutar açıklanmadı","Mahkeme ve savcılık açıklamalarındaki tedbir tutarları"],
+  ["İskonto oranı",()=>fp(P.rate),"var","TL piyasa faizi referansı; TP2'nin 15.09 ters repo faizi %43","Güncel TL mevduat ve repo faizi"],
+  ["Fonlar arası çapraz pay (çift sayım)",()=>"≥12,5 mlr TL","tur","TLY 31.08'de tasfiyedeki Hedef Portföy Mavi fonundan (HMV) 12,5 mlr, T3B'den 0,04 mlr pay taşıyor. Toplam 842,7 mlr bu tutar kadar iki kez sayılıyor; konsolide yatırımcı varlığı ~830 mlr. Model bu kalemi 'diğer fon payları' içinde hisse geri dönüş oranıyla değerliyor","130 fonun fon payı kalemlerinin eşleştirilmesi"],
+  ["Kohort dağılımı",()=>"4 dönem","var","Örnek dağılım","MKK ve aracı kurumlardaki yatırımcı bazında maliyet verisi"],
+  ["Taban iade oranı (alternatif yollar)",()=>FMT.pday(C.q0),"tur","Pusula fonlarından 28.08 sonrası ~13 iş gününde 132,7 mlr çıkış; PRY bir ayda 111 mlr TL'den 18,9 mlr TL'ye","Fon bazında günlük TEFAS tedavül verisi"],
+  ["Taban kilidinde satılabilen hacim",()=>fp(C.lockFrac),"veri","DSTKF 18.09: 0,18 mlr TL hacim, 3 aylık ortalama 2,65 mlr TL","Diğer hisselerin taban günlerindeki hacim"],
+  ["Temel değer tabanı",()=>fp(C.pFI),"var","Sığ hisselerde alıcıların devreye gireceği fiyat","Şirket bazında değerleme (defter değeri, kârlılık)"],
+  ["Panik duyarlılığı, stres baskısı, çarpanlar",()=>nf2.format(C.beta)+" / "+FMT.pday(C.exo),"var","Davranış parametreleri","Kriz günlerindeki talimat verisinin fiyat değişimine regresyonu"]
+];
+const COLL_TP2=[["DSTKF (Destek Finans Faktoring)","Sığ hisse",51.0],["Tera Yatırım Bankası bonoları","Grup borcu",20.1],["Tera Varlık Kiralama kira sertifikaları","Grup borcu",8.2],["TPKGY","Grup fonu/GYO",19.8],["Hazine (DİBS)","DİBS",28.6],["Birleşik İpotek VDMK, Kayatur bono","Diğer",0.7]];
+const COLL_PRY=[["PASEU (Pasifik Eurasia)","Sığ hisse",29.2],["DSTKF","Sığ hisse",18.2],["THYAO, EREGL, PGSUS, BIMAS","Likit hisse",6.7],["Hazine (DİBS)","DİBS",13.0],["VDMK, Akdeniz Faktoring bono","Diğer",0.4]];
+const CONC=[["TEHOL",0.7774,822606173],["ANELE",0.6814,47960455],["TRHOL",0.6013,6160009],["OZATD",0.5752,10756759],["PEKGY",0.5468,1608817294],["IEYHO",0.4309,81800000],["DSTKF (doğrudan)",0.3446,29129321],["ISKPL",0.2639,156300000],["SELEC",0.2062,19088782],["BIGEN",0.2024,30374000],["PASEU (halka açıklığa göre)",1.98,null]];
+const TURN=2.65/(84.7*2.448); // DSTKF günlük fiili dolaşım devir hızı
+function buildLedger(){
+  const tb=document.querySelector("#ledger tbody");
+  tb.innerHTML=LEDGER.map(([l,v,s,d,c])=>`<tr><td>${esc(l)}</td><td class="n">${esc(v())}</td><td><span class="st ${ST[s][0]}">${ST[s][1]}</span></td><td>${esc(d)}</td><td>${esc(c)}</td></tr>`).join("");
+  const cnt={veri:0,tur:0,vek:0,var:0}; LEDGER.forEach(x=>cnt[x[2]]++);
+  document.getElementById("led-sum").innerHTML=Object.entries(cnt).map(([k,n])=>`<div class="kpi"><div class="v">${n}</div><div class="l">${ST[k][1]}</div></div>`).join("");
+  const ct=(arr,host)=>{const tot=arr.reduce((s,x)=>s+x[2],0); document.getElementById(host).innerHTML=arr.map(([a,b,v])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td><td class="n">${bn(v)}</td><td class="n">%${nf1.format(v/tot*100)}</td></tr>`).join("")+`<tr><td><b>Toplam</b></td><td></td><td class="n"><b>${bn(tot)}</b></td><td class="n"><b>%100</b></td></tr>`;};
+  ct(COLL_TP2,"coll-tp2"); ct(COLL_PRY,"coll-pry");
+  document.getElementById("dstkf-calc").innerHTML=
+   "DSTKF fiili dolaşımı: 333,3 milyon payın %25,4'ü = 84,7 milyon lot. 16.09 kapanışı 2.448 TL.<br>"+
+   "Fonların doğrudan pozisyonu: 29,1 milyon lot × 2.448 TL = 71,3 mlr TL (dolaşımın %34,5'i).<br>"+
+   "3 aylık ortalama günlük hacim: 2,65 mlr TL → devir hızı 2,65 ÷ (84,7 mn × 2.448 TL) = %"+nf2.format(TURN*100)+"/gün.<br>"+
+   "Erime süresi (hacmin tamamı): 71,3 ÷ 2,65 = 27 gün. Hacmin %25'iyle: 108 gün.<br>"+
+   "TP2 teminatındaki DSTKF de fona geçerse: +24,4 milyon lot (31.08 değeriyle) → toplam 131 mlr TL, 49 gün; fon ve teminat birlikte dolaşımın ~%63'ü.<br>"+
+   "Kriz günü hacmiyle (18.09, 0,18 mlr TL): 71,3 ÷ 0,18 ≈ 396 gün.";
+  document.querySelector("#conc tbody").innerHTML=CONC.map(([n,r,lot])=>`<tr><td>${esc(n)}</td><td class="n">%${nf1.format(r*100)}</td><td class="n">${lot?nf0.format(lot):"–"}</td><td class="n">${nf0.format(r/TURN)} gün</td></tr>`).join("");
+  const qs=[
+    "Kamu tazmini için resmî bir karar yok. Tazminin kapsamı (nominal anapara, enflasyonlu anapara, tavan, dönem kesiti) ve finansmanı netleştiğinde Kamu tazmini sekmesindeki kural ve paketler gerçek parametrelerle güncellenmelidir.",
+    "YENİ Parti milletvekili mevcut tasfiye yöntemiyle geri dönüşün %10–15 olacağını söylüyor; modelin varsayılan sonucu %66,5. Aradaki fark hangi varsayımdan kaynaklanıyor (sığ hisse fiyatı, ters repo tahsilatı, tasfiye maliyeti)? Kamu tazmininin maliyeti bu orana çok duyarlı olduğu için bu fark doğrudan önemlidir.",
+    "Sektör katkısı, YTM özel fonu, TVF ve TMSF gibi bütçe dışı kaynakların serbest tutarı bilinmiyor; Kamu tazmini sekmesinde bu kaynakların kapasitesi karşılaştırılamıyor.",
+    "TP2'nin ters reposu 16.09'da yenilendi mi? KAP'ta 15.09–16.09 vadeli bildirim var; sonraki güne ait bildirim bulunamadı. Bir kullanıcı paylaşımı, MKK kayıtlarına göre DSTKF paylarının 16.09'da fondan kurucu gruba geçtiğini iddia ediyor; doğrulanmadı. Geçtiyse fon hisse yerine karşı taraftan nakit alacaklıdır ve hisse riski yerine karşı taraf riski taşır. Kapatır: KAP 16–17.09 ters repo bildirimleri, MKK pay değişim bildirimi, tasfiye bankasının açılış bilançosu.",
+    "TP2 teminatındaki DSTKF (31.08'de 50,6 mlr TL) karşı tarafın DSTKF'deki %10,5'lik payının (1 Eylül fiyatıyla ~73 mlr TL) büyük kısmına denk geliyor. Aynı payların hem karşı tarafın varlığı hem fonun teminatı olması, teminatın bağımsız bir güvence olmadığını gösterir. Bu bir çıkarımdır; pay sahipliği tablosu ve saklama kayıtlarıyla teyit edilmeli.",
+    "TPKGY kalemi (19,8 mlr TL) nedir? Adından Tera Portföy'e bağlı bir gayrimenkul fonu veya ortaklığı olduğu anlaşılıyor; ISIN ve net aktif değeri bulunamadı.",
+    "TP2 ve TLY dışındaki 24,4 mlr TL ters repo hangi fonlarda ve hangi teminatla? Şu an PRY vekil olarak kullanılıyor.",
+    "PRY 31.08'de 67,5 mlr TL ters repo taşırken 16.09'da ters reposu yok; varlıklarının %92'si finansman bonosu ve özel sektör kira sertifikası. Ters repo çözülüp çıkan yatırımcılara ödenirken fonda kalanlara hangi ihraççıların borçlanma araçlarının kaldığı Eylül raporunda görülecek. Bu, ilk çıkanlarla sona kalanlar arasındaki aktarımın doğrudan göstergesi olabilir.",
+    "Tasfiyedeki fonlar birbirinin payını tutuyor (TLY'de HMV 12,5 mlr). Tasfiye sırasında bu paylar nasıl mahsuplaşacak? Çift sayım toplamı en az 12,5 mlr TL şişiriyor.",
+    "Sığ hisse payı (%65) ve hisse bazında hacimler. 130 fonun hisse dökümü ve BIST günlük hacim verisi bu iki parametreyi veriye çevirir.",
+    "Karşı tarafın (Tera Yatırım Menkul Değerler) güncel bilançosu: nakit ödeme oranının üst sınırını belirler.",
+    "Yatırımcıların maliyet dağılımı (kohortlar): MKK ve aracı kurum kayıtlarında var, kamuya açık değil."
+  ];
+  document.getElementById("questions").innerHTML=qs.map(q=>`<li>${esc(q)}</li>`).join("");
+}
+
+
+// ---------- KAMU TAZMİNİ ----------
+const PUB={invest:455758, ytmCap:2065145, spend:18929, deficit:2713, interest:2742, tax:15632, gdp:2713/0.035, def8:1308.1, prim8:680};
+const PUB_DEF={real:0, infl:0.30, cap:1e15, pAbove:1, cover:1, from:0, sigma:1.4, subro:0.5, payStart:6, payMonths:6, bondRate:0.35, bondYears:3, mDebt:40, mBudget:30, mSector:15, mPublic:15, mTax:0, hold:[1.5,0.6,0.2,0.05]};
+let PB=JSON.parse(JSON.stringify(PUB_DEF));
+let PBRULE="full", PBPKG="bal";
+try{ const s=JSON.parse(localStorage.getItem("tasfiye-masasi-v4")||"null"); if(s&&s.PB){ PB={...PUB_DEF,...s.PB,hold:(Array.isArray(s.PB.hold)&&s.PB.hold.length===4)?s.PB.hold:[...PUB_DEF.hold]}; } if(s&&s.PBRULE) PBRULE=s.PBRULE; if(s&&s.PBPKG) PBPKG=s.PBPKG; }catch(e){}
+const PUB_CAPS=[["Sınırsız",1e15],["5 milyon TL",5e6],["2,07 milyon TL (YTM 2026 tavanı)",2065145],["1 milyon TL",1e6],["500 bin TL",5e5],["250 bin TL",2.5e5]];
+const PUB_RULES=[
+ {id:"full", name:"Tam nominal anapara", set:{real:0,cap:1e15,pAbove:1,cover:1,from:0}, desc:"Her yatırımcının ortalama alış maliyetinin altında kalan kısım tazmin edilir; maliyetin üstündeki kazanç tazmin konusu değildir. Sınır ve kapsam filtresi yoktur; en geniş kural."},
+ {id:"real", name:"Enflasyonlu anapara", set:{real:1,cap:1e15,pAbove:1,cover:1,from:0}, desc:"Anapara, tutma süresi boyunca yıllık enflasyonla güncellenir ve bu güncel değerin altında kalan kısım tazmin edilir. Kamuoyundaki gerçek ekonomik kayıp yaklaşımının basitleştirilmiş karşılığıdır; teklifin kendi formülünü birebir uygulamaz."},
+ {id:"ytm", name:"YTM tavanıyla", set:{real:0,cap:2065145,pAbove:0,cover:1,from:0}, desc:"Yatırımcı başına tazmin, 2026 YTM azami tutarıyla (2.065.145 TL) sınırlanır; tavanı aşan kayıp ödenmez. YTM'nin mevcut yasal kapsamı fiyat zararını içermez; burada yalnızca tavan ölçüsü olarak alınıyor."},
+ {id:"cap5", name:"5 milyon TL tavan", set:{real:0,cap:5e6,pAbove:0,cover:1,from:0}, desc:"Tazmin tavanı 5 milyon TL'dir (kamuoyunda dile getirilen limit önerilerinden biri). Sonuç, yatırımcı pozisyon dağılımı varsayımına bağlıdır."},
+ {id:"part", name:"%80 koruma", set:{real:0,cap:1e15,pAbove:1,cover:0.8,from:0}, desc:"Anapara eksiğinin yalnızca %80'i ödenir; yatırımcı riskin bir kısmını üstlenmeye devam eder."},
+ {id:"post", name:"Temmuz 2026 sonrası girenler", set:{real:0,cap:1e15,pAbove:1,cover:1,from:2}, desc:"Yalnızca Temmuz 2026 ve sonrasında giren yatırımcılar tazmin edilir. Kayıp bu dönemlerde yoğunlaştığı için dar kapsamlı ama yüksek koruma sağlayan bir kesittir; daha erken girenler, tasfiyeden dönen oranın üzerinde maliyetle girmedikleri sürece kapsam dışı kalır."}
+];
+const PUB_PKGS=[
+ {id:"debt", name:"Tamamı borçlanma", set:{mDebt:100,mBudget:0,mSector:0,mPublic:0,mTax:0}, desc:"Net yük Hazine iç borçlanmasıyla karşılanır. Harcama ve vergi değişmez; borç stoku ve faiz yükü artar."},
+ {id:"budget", name:"Bütçe içi yeniden tahsis", set:{mDebt:0,mBudget:100,mSector:0,mPublic:0,mTax:0}, desc:"Net yük diğer harcama kalemlerinden kısılarak karşılanır; borçlanma ve ek vergi yoktur."},
+ {id:"bal", name:"Dengeli paket", set:{mDebt:40,mBudget:30,mSector:15,mPublic:15,mTax:0}, desc:"Yük dört kaynağa dağıtılır: borçlanma, bütçe içi tasarruf, sektör katkısı ve kamu kuruluşlarının kaynakları."},
+ {id:"tax", name:"Vergi ağırlıklı", set:{mDebt:0,mBudget:40,mSector:0,mPublic:0,mTax:60}, desc:"Yükün büyük kısmı geçici ek vergiyle, kalanı bütçe içi tasarrufla karşılanır. Gereken ek vergi, 2026 vergi gelirleri hedefine oranla gösterilir."}
+];
+const PUB_MIX=[["mDebt","Hazine iç borçlanması",1],["mBudget","Bütçe içi yeniden tahsis (harcama kısıntısı)",2],["mSector","Sektör katkısı / YTM özel fonu",3],["mPublic","Kamu kuruluşları (TVF, TMSF, kamu bankaları vb.)",4],["mTax","Geçici ek vergi",5]];
+const PUB_CTL=[
+ {k:"pAbove",l:"Tavan üstü kayıp için ödeme oranı",min:0,max:1,step:0.05,f:"pct",h:"Tavanı aşan kayıp kısmının yüzde kaçı ödenir."},
+ {k:"cover",l:"Anapara eksiğinin ödenen kısmı",min:0.3,max:1,step:0.05,f:"pct"},
+ {k:"infl",l:"Yıllık enflasyon (enflasyonlu anapara için)",min:0,max:0.8,step:0.01,f:"pct",h:"Varsayım. TÜİK'in son TÜFE verisiyle değiştirin."},
+ {k:"sigma",l:"Pozisyon büyüklüğü dağılımının yayılımı (log-normal σ)",min:0.5,max:2.5,step:0.1,f:"x",h:"Yüksek değer: birkaç büyük yatırımcı toplam değerin büyük kısmını tutar."},
+ {k:"subro",l:"Kamunun devraldığı hukuki tahsilat payı",min:0,max:1,step:0.05,f:"pct",h:"Halefiyetle; ödenen tazminle sınırlı. Ödemeyi öne çeker, net yükü değiştirmez."},
+ {k:"payStart",l:"Tazmin ödemesinin başlangıcı",min:0,max:24,step:1,f:"months",h:"16.09.2026'dan itibaren ay."},
+ {k:"payMonths",l:"Tazmin ödeme süresi",min:1,max:24,step:1,f:"months"},
+ {k:"bondRate",l:"Hazine borçlanma faizi (yıllık)",min:0,max:0.7,step:0.01,f:"pct"},
+ {k:"bondYears",l:"Borçlanma vadesi",min:1,max:10,step:1,f:"years"}
+];
+FMT.years=v=>nf0.format(v)+" yıl";
+const pc2=v=>"%"+nf2.format(v*100);
+const mb=v=>Math.abs(v)>=1000?nf2.format(v/1000)+" trn TL":nf1.format(v)+" mlr TL";
+
+function pubCapFrac(g,p,nav){
+  if(g<=0||p.cap>=1e14) return 1;
+  const mean=nav*1e9/PUB.invest, sg=p.sigma, mu=Math.log(mean)-sg*sg/2;
+  let num=0,den=0;
+  for(let z=-6;z<=6.0001;z+=0.05){
+    const w=Math.exp(-z*z/2), v=Math.exp(mu+sg*z), s=g*v;
+    num+=w*(Math.min(s,p.cap)+p.pAbove*Math.max(0,s-p.cap)); den+=w*s;
+  }
+  return den>0?num/den:1;
+}
+function pubCalc(Rtot,p,legal,nav){
+  const legalR=legal/nav, Rinv=Math.max(0,Rtot-p.subro*legalR);
+  const tot=COH.reduce((s,c)=>s+Math.max(0,+c.share||0),0)||1;
+  const rows=COH.map((c,i)=>{
+    const share=Math.max(0,+c.share||0)/tot, cost0=Math.max(0.01,+c.cost||0.01), hold=p.hold[i];
+    const cost=p.real?cost0*Math.pow(1+p.infl,hold):cost0;
+    const elig=i>=p.from, gapAll=Math.max(0,cost-Rinv), gap=elig?gapAll:0;
+    return {name:c.name,share,cost0,cost,hold,elig,gapAll,gap};
+  });
+  const g=rows.reduce((s,r)=>s+r.share*r.gap,0), gAll=rows.reduce((s,r)=>s+r.share*r.gapAll,0);
+  const gapTotal=g*nav, gapAllTotal=gAll*nav, f=pubCapFrac(g,p,nav);
+  const gross=gapTotal*f*p.cover, subroIn=Math.min(gross,p.subro*legal), net=gross-subroIn;
+  return {rows,Rinv,g,gapTotal,gapAllTotal,f,gross,subroIn,net,left:gapAllTotal-gross};
+}
+function pubFin(net,p){
+  const w={mDebt:p.mDebt,mBudget:p.mBudget,mSector:p.mSector,mPublic:p.mPublic,mTax:p.mTax};
+  const sum=Object.values(w).reduce((a,b)=>a+b,0)||1, a={}, s={};
+  for(const k in w){ a[k]=net*w[k]/sum; s[k]=w[k]/sum; }
+  return {a,s};
+}
+function pubActive(list,cur,keys){ const x=list.find(r=>keys.every(k=>r.set[k]===cur[k])); return x?x.id:null; }
+
+function buildPub(){
+  const rh=document.getElementById("pub-rules");
+  PUB_RULES.forEach(r=>{ const b=document.createElement("button"); b.type="button"; b.className="preset"; b.dataset.id=r.id; b.textContent=r.name; b.addEventListener("click",()=>{Object.assign(PB,r.set);PBRULE=r.id;syncPub();renderPub();save();}); rh.appendChild(b); });
+  const ph=document.getElementById("pub-pkgs");
+  PUB_PKGS.forEach(r=>{ const b=document.createElement("button"); b.type="button"; b.className="preset"; b.dataset.id=r.id; b.textContent=r.name; b.addEventListener("click",()=>{Object.assign(PB,r.set);PBPKG=r.id;syncPub();renderPub();save();}); ph.appendChild(b); });
+  const g=document.getElementById("pub-ctl");
+  // seçimler
+  const mk=(id,label,opts,get,set)=>{ const w=document.createElement("div"); w.className="ctl"; w.innerHTML=`<label for="${id}"><span>${esc(label)}</span></label><select id="${id}"></select>`; const sel=w.querySelector("select"); opts.forEach(([t,v],i)=>sel.add(new Option(t,String(i)))); sel.addEventListener("change",()=>{set(opts[+sel.value][1]);syncPub();renderPub();save();}); g.appendChild(w); return sel; };
+  mk("pub-cap","Yatırımcı başına tazmin tavanı",PUB_CAPS,()=>PB.cap,v=>{PB.cap=v;});
+  mk("pub-real","Anapara esası",[["Nominal alış maliyeti",0],["Enflasyonla güncellenmiş",1]],()=>PB.real,v=>{PB.real=v;});
+  mk("pub-from","Kapsanan giriş dönemleri",[["Tüm dönemler",0]].concat([1,2,3].map(i=>[COH[i].name+" ve sonrası",i])),()=>PB.from,v=>{PB.from=v;});
+  PUB_CTL.forEach(it=>{
+    const w=document.createElement("div"); w.className="ctl"; const id="pub-"+it.k;
+    w.innerHTML=`<label for="${id}"><span>${esc(it.l)}</span><output></output></label><input type="range" id="${id}" min="${it.min}" max="${it.max}" step="${it.step}">${it.h?`<small>${esc(it.h)}</small>`:""}`;
+    const inp=w.querySelector("input"), out=w.querySelector("output");
+    inp.addEventListener("input",()=>{PB[it.k]=parseFloat(inp.value);out.textContent=FMT[it.f](PB[it.k]);renderPub();save();});
+    g.appendChild(w);
+  });
+  const mx=document.getElementById("pub-mix");
+  PUB_MIX.forEach(([k,l,c])=>{
+    const w=document.createElement("div"); w.className="ctl"; const id="pub-"+k;
+    w.innerHTML=`<label for="${id}"><span><i class="sw c${c}"></i>${esc(l)}</span><output></output></label><input type="range" id="${id}" min="0" max="100" step="5">`;
+    const inp=w.querySelector("input"), out=w.querySelector("output");
+    inp.addEventListener("input",()=>{PB[k]=parseFloat(inp.value);out.textContent="%"+nf0.format(PB[k]);PBPKG=null;renderPub();save();});
+    mx.appendChild(w);
+  });
+  syncPub();
+}
+function syncPub(){
+  PUB_CTL.forEach(it=>{ const i=document.getElementById("pub-"+it.k); if(!i) return; i.value=PB[it.k]; i.parentElement.querySelector("output").textContent=FMT[it.f](PB[it.k]); });
+  PUB_MIX.forEach(([k])=>{ const i=document.getElementById("pub-"+k); if(!i) return; i.value=PB[k]; i.parentElement.querySelector("output").textContent="%"+nf0.format(PB[k]); });
+  const ci=PUB_CAPS.findIndex(c=>c[1]===PB.cap); const sc=document.getElementById("pub-cap"); if(sc) sc.value=String(ci<0?0:ci);
+  const sr=document.getElementById("pub-real"); if(sr) sr.value=String(PB.real?1:0);
+  const sf=document.getElementById("pub-from"); if(sf) sf.value=String(PB.from);
+}
+window.__pubReset=function(){ PB=JSON.parse(JSON.stringify(PUB_DEF)); PBRULE="full"; PBPKG="bal"; syncPub(); };
+
+function renderPub(){
+  const r=lastRun; if(!r) return;
+  const nav=NAV, legal=r.legal, Rtot=r.R;
+  const c=pubCalc(Rtot,PB,legal,nav);
+  const ar=pubActive(PUB_RULES,PB,["real","cap","pAbove","cover","from"]);
+  document.querySelectorAll("#pub-rules .preset").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===ar?"true":"false"));
+  const rr=PUB_RULES.find(x=>x.id===ar);
+  document.getElementById("pub-rule-desc").textContent=rr?rr.desc:"Özel kural: parametreler hazır kurallardan farklı ayarlandı.";
+  const ap=pubActive(PUB_PKGS,PB,["mDebt","mBudget","mSector","mPublic","mTax"]);
+  document.querySelectorAll("#pub-pkgs .preset").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===ap?"true":"false"));
+  const pp=PUB_PKGS.find(x=>x.id===ap);
+  document.getElementById("pub-pkg-desc").textContent=pp?pp.desc:"Özel dağılım.";
+  // özet
+  const perInv=c.gross*1e9/PUB.invest;
+  document.getElementById("pub-verdict").innerHTML=
+    `Seçili geri dönüşle (${pc1(Rtot)}) anaparanın altında kalan toplam kayıp <span class="num">${mb(c.gapAllTotal)}</span>. Kural kapsamındaki ve tavan sonrası brüt tazmin <span class="num">${mb(c.gross)}</span>; kamunun halefiyetle geri alması beklenen ${mb(c.subroIn)} düşülünce net yük <span class="num">${mb(c.net)}</span>. Bu, GSYH'nin ${pc2(c.net/PUB.gdp)}'i, 2026 bütçe açığı hedefinin ${pc1(c.net/PUB.deficit)}'i. Ortalama tazmin, ${nf0.format(PUB.invest)} yatırımcı başına ${nf0.format(Math.round(perInv))} TL.`;
+  const kp=[[mb(c.gross),"Brüt tazmin"],[mb(c.net),"Net kamu yükü"],[pc2(c.net/PUB.gdp),"GSYH'ye oran"],[pc1(c.net/PUB.deficit),"2026 bütçe açığı hedefine oran"]];
+  document.getElementById("pub-kpis").innerHTML=kp.map(([v,l])=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+  // kohort tablosu
+  const tb=document.querySelector("#pub-coh tbody");
+  tb.innerHTML=c.rows.map((x,i)=>`<tr><td>${esc(x.name)}${x.elig?"":' <span style="color:var(--muted)">(kapsam dışı)</span>'}</td><td class="n">${pc0(x.share)}</td><td class="n">${nf2.format(x.cost)}${PB.real?'<div style="color:var(--muted);font-size:.74rem">nominal '+nf2.format(x.cost0)+'</div>':""}</td><td class="n"><input class="hold" type="number" min="0" max="6" step="0.05" value="${PB.hold[i]}" aria-label="${esc(x.name)} ortalama tutma süresi (yıl)" data-i="${i}"></td><td class="n ${x.gapAll>0?"bad":"good"}">${x.gapAll>0?pc0(x.gapAll):"yok"}</td><td class="n">${x.gap>0?nf1.format(x.share*x.gap*nav*(c.f)*PB.cover):"–"}</td></tr>`).join("");
+  tb.querySelectorAll("input.hold").forEach(i=>i.addEventListener("input",()=>{PB.hold[+i.dataset.i]=Math.max(0,parseFloat(i.value)||0);renderPub();save();}));
+  document.getElementById("pub-coh-note").textContent=`Tasfiyeden dönen oran (halefiyet sonrası yatırımcıya kalan): ${pc1(c.Rinv)}. Maliyet ve kayıp, 16.09 birim değerine oran olarak gösterilir.`+(c.f<0.999?` Tavan nedeniyle kayıp tutarının ${pc1(1-c.f)}'i kapsam dışı kalıyor.`:"");
+  // nakit akışı grafiği
+  renderPubCash(c);
+  // kural karşılaştırması
+  const rt=document.querySelector("#pub-rules-tbl tbody");
+  rt.innerHTML=PUB_RULES.map(x=>{ const q=pubCalc(Rtot,{...PB,...x.set},legal,nav); return `<tr class="clickable${x.id===ar?" cur":""}" data-id="${x.id}" tabindex="0"><td>${esc(x.name)}</td><td class="n">${mb(q.gapAllTotal)}</td><td class="n">${mb(q.gross)}</td><td class="n">${mb(q.net)}</td><td class="n">${pc2(q.net/PUB.gdp)}</td><td class="n">${mb(q.left)}</td></tr>`; }).join("");
+  rt.querySelectorAll("tr").forEach(tr=>{ const go=()=>{const x=PUB_RULES.find(y=>y.id===tr.dataset.id);Object.assign(PB,x.set);PBRULE=x.id;syncPub();renderPub();save();}; tr.addEventListener("click",go); tr.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}}); });
+  // finansman
+  const fin=pubFin(c.net,PB);
+  const fb=document.getElementById("pub-fbar");
+  fb.innerHTML=PUB_MIX.map(([k,l,ci])=>fin.s[k]>0?`<i class="c${ci}" style="width:${(fin.s[k]*100).toFixed(2)}%" title="${esc(l)}: %${nf0.format(fin.s[k]*100)}"></i>`:"").join("");
+  const D=fin.a.mDebt, yint=D*PB.bondRate;
+  const rowsF=[
+    ["mDebt", D>0?`Yıllık faiz yükü ${mb(yint)}; 2026 faiz gideri hedefinin ${pc1(yint/PUB.interest)}'i. Vade (${PB.bondYears} yıl) boyunca toplam faiz yaklaşık ${mb(yint*PB.bondYears)}.`:"–"],
+    ["mBudget", fin.a.mBudget>0?`2026 faiz dışı harcamanın (${mb(PUB.spend-PUB.interest)}) ${pc1(fin.a.mBudget/(PUB.spend-PUB.interest))}'i.`:"–"],
+    ["mSector", fin.a.mSector>0?"Kapasite verisi yok (YTM özel fonunun ve sektör bilançolarının büyüklüğü bilinmiyor).":"–"],
+    ["mPublic", fin.a.mPublic>0?"Kapasite verisi yok (TVF, TMSF ve kamu bankalarının serbest kaynağı bilinmiyor).":"–"],
+    ["mTax", fin.a.mTax>0?`2026 vergi gelirleri hedefinin (${mb(PUB.tax)}) ${pc1(fin.a.mTax/PUB.tax)}'i kadar ek vergi.`:"–"]
+  ];
+  document.querySelector("#pub-fin tbody").innerHTML=rowsF.map(([k,t])=>{ const m=PUB_MIX.find(x=>x[0]===k); return `<tr><td><i class="sw c${m[2]}"></i>${esc(m[1])}</td><td class="n">${pc0(fin.s[k])}</td><td class="n">${nf1.format(fin.a[k])}</td><td>${esc(t)}</td></tr>`; }).join("")+
+    `<tr><td><b>Toplam net yük</b></td><td class="n"><b>%100</b></td><td class="n"><b>${nf1.format(c.net)}</b></td><td>Brüt tazmin ${mb(c.gross)} − halefiyetle geri dönüş ${mb(c.subroIn)}</td></tr>`;
+  const bridge=c.subroIn*PB.bondRate*Math.max(0,P.legalMonth-(PB.payStart+PB.payMonths/2))/12;
+  document.getElementById("pub-fin-note").textContent=`Halefiyet geliri ${P.legalMonth}. ayda gelir; tazmin ise ${PB.payStart}. aydan itibaren ödendiği için aradaki köprü, ${PB.bondRate>0?"borçlanma faiziyle yaklaşık "+mb(bridge)+" ek finansman maliyeti":"finansman maliyeti olmadan"} yaratır. Bu tutar yukarıdaki net yüke dahil değildir.`;
+  document.getElementById("pub-scale").innerHTML=[
+    [mb(PUB.spend),"2026 merkezi yönetim bütçe giderleri (bütçe kanunu)","TBMM, 2026 bütçe gerekçesi"],
+    [mb(PUB.deficit),"2026 bütçe açığı hedefi (GSYH'nin %3,5'i)","TBMM, 2026 bütçe gerekçesi"],
+    [mb(PUB.interest),"2026 faiz gideri hedefi","2026 bütçe analizi"],
+    [mb(PUB.tax),"2026 vergi gelirleri hedefi","2026 bütçe analizi"],
+    [mb(PUB.def8),"Ocak–Ağustos 2026 gerçekleşen bütçe açığı","Hazine ve Maliye Bakanlığı, Ağustos bütçe verisi"],
+    [mb(PUB.gdp),"Türetilen 2026 GSYH (2.713 ÷ %3,5)","Hesaplama"]
+  ].map(([v,l,s])=>`<div class="fact"><div class="v">${v}</div><div class="l">${esc(l)}</div><div class="s">${esc(s)}</div></div>`).join("");
+  renderPubSens(c,Rtot,legal,nav);
+}
+function renderPubCash(c){
+  const maxM=Math.max(24,Math.ceil((Math.max(PB.payStart+PB.payMonths,P.legalMonth)+6)/6)*6);
+  const W=560,H=266,ml=52,mr=12,mt=24,mb2=34, iw=W-ml-mr, ih=H-mt-mb2;
+  const out=m=>c.gross*Math.max(0,Math.min(1,(m-PB.payStart)/PB.payMonths));
+  const inn=m=>m>=P.legalMonth?c.subroIn:0;
+  let peak=0, pts=[];
+  for(let m=0;m<=maxM;m++){ const v=out(m)-inn(m); pts.push([m,v]); peak=Math.max(peak,v); }
+  const ymax=Math.max(peak,1)*1.1, x=m=>ml+m/maxM*iw, y=v=>mt+ih-Math.max(0,v)/ymax*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="min-width:420px;width:100%" role="img" aria-label="Kamunun birikimli net nakit ihtiyacı">`;
+  for(let i=0;i<=4;i++){ const t=ymax*i/4; s+=`<line class="gl" x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}"/><text x="${ml-6}" y="${y(t)+4}" text-anchor="end">${nf0.format(t)}</text>`; }
+  s+=`<text x="4" y="11">mlr TL</text>`;
+  for(let m=0;m<=maxM;m+=6) s+=`<text x="${x(m)}" y="${H-mb2+16}" text-anchor="middle">${m}</text>`;
+  s+=`<text x="${W-mr}" y="${H-4}" text-anchor="end">ay (16.09.2026'dan itibaren)</text>`;
+  s+=`<path class="ln-cum" d="${pts.map((q,i)=>(i?"L":"M")+x(q[0])+","+y(q[1])).join(" ")}"/><line class="ax" x1="${ml}" x2="${W-mr}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  document.getElementById("pub-cf-host").innerHTML=s;
+  document.getElementById("pub-cf-note").textContent=`Azami birikimli net ihtiyaç ${mb(peak)}. Halefiyet geliri ${P.legalMonth}. ayda ${mb(c.subroIn)} olarak yansır.`;
+}
+function renderPubSens(c,Rtot,legal,nav){
+  const grid=[]; for(let q=0.05;q<=0.951;q+=0.05) grid.push(+q.toFixed(2));
+  const res=grid.map(q=>({R:q,...pubCalc(q,PB,legal,nav)}));
+  const W=560,H=266,ml=52,mr=12,mt=24,mb2=34, iw=W-ml-mr, ih=H-mt-mb2;
+  const ymax=Math.max(1,...res.map(a=>a.net))*1.08, x=q=>ml+(q-0.05)/0.9*iw, y=v=>mt+ih-v/ymax*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="min-width:420px;width:100%" role="img" aria-label="Net kamu yükünün geri dönüş oranına duyarlılığı">`;
+  s+=`<rect class="band" x="${x(0.10)}" y="${mt}" width="${x(0.15)-x(0.10)}" height="${ih}"/>`;
+  for(let i=0;i<=4;i++){ const t=ymax*i/4; s+=`<line class="gl" x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}"/><text x="${ml-6}" y="${y(t)+4}" text-anchor="end">${nf0.format(t)}</text>`; }
+  s+=`<text x="4" y="11">mlr TL</text>`;
+  [0.1,0.3,0.5,0.7,0.9].forEach(q=>{ s+=`<text x="${x(q)}" y="${H-mb2+16}" text-anchor="middle">%${Math.round(q*100)}</text>`; });
+  s+=`<text x="${W-mr}" y="${H-4}" text-anchor="end">tasfiyeden toplam geri dönüş oranı</text>`;
+  s+=`<path class="ln-sens" d="${res.map((a,i)=>(i?"L":"M")+x(a.R)+","+y(a.net)).join(" ")}"/>`;
+  const cx=Math.min(0.95,Math.max(0.05,Rtot));
+  s+=`<line class="vline" x1="${x(cx)}" x2="${x(cx)}" y1="${mt}" y2="${mt+ih}"/><circle class="cur-dot" cx="${x(cx)}" cy="${y(c.net)}" r="4"/><text x="${x(cx)+6}" y="${Math.max(mt+12,y(c.net)-8)}">seçili: %${nf0.format(Rtot*100)}</text>`;
+  s+=`<line class="ax" x1="${ml}" x2="${W-mr}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  document.getElementById("pub-sens-host").innerHTML=s;
+  const pts=[0.15,0.30,0.45,0.60,Rtot,0.75,0.90].sort((a,b)=>a-b);
+  document.querySelector("#pub-sens tbody").innerHTML=pts.map(q=>{ const a=pubCalc(q,PB,legal,nav), cur=Math.abs(q-Rtot)<1e-9; return `<tr class="${cur?"cur":""}"><td>${pc1(q)}${cur?' <span style="color:var(--muted)">(seçili)</span>':""}${Math.abs(q-0.15)<1e-9&&!cur?' <span style="color:var(--muted)">(muhalefetin %10–15 iddiasının üst sınırı)</span>':""}</td><td class="n">${mb(a.gross)}</td><td class="n">${mb(a.net)}</td><td class="n">${pc2(a.net/PUB.gdp)}</td><td class="n">${pc0(a.net/PUB.deficit)}</td></tr>`; }).join("");
+}
+LEDGER.push(
+  ["Tekil yatırımcı sayısı",()=>nf0.format(PUB.invest),"veri","SPK açıklaması (23.09.2026), MKK kayıtları","—"],
+  ["YTM azami tazmin tutarı (2026)",()=>nf0.format(PUB.ytmCap)+" TL","veri","SPK 2025/68 bülteni; YTM'nin yasal kapsamı fiyat zararını dışlıyor (SPKn m.84/2), tavan yalnızca ölçü olarak kullanılıyor","Yeni bir kanun veya Kurul kararı"],
+  ["2026 bütçe giderleri, açık, faiz, vergi gelirleri",()=>mb(PUB.spend)+" / "+mb(PUB.deficit)+" / "+mb(PUB.interest)+" / "+mb(PUB.tax),"veri","2026 merkezi yönetim bütçe kanunu gerekçesi ve analizi; Ocak–Ağustos gerçekleşme 1.308,1 mlr TL açık","Orta Vadeli Program güncellemesi"],
+  ["2026 GSYH",()=>mb(PUB.gdp),"tur","Bütçe açığı hedefi 2.713 mlr TL ÷ GSYH'ye oranı %3,5","TÜİK GSYH verisi"],
+  ["Kamu tazmin kararı",()=>"yok","veri","Resmî karar yok; hükümetin tazmin biçimi netleşmemiş; YENİ Parti kanun teklifi (24.09) ve araştırma önergeleri Meclis'te","Kanun veya Bakanlar Kurulu/Cumhurbaşkanı kararı"],
+  ["Yatırımcı pozisyon dağılımı (log-normal σ)",()=>nf2.format(PB.sigma)+" (ortalama "+nf0.format(Math.round(NAV*1e9/PUB.invest))+" TL)","var","Ortalama pozisyon = 842,7 mlr ÷ 455.758; yayılım için veri yok (fon bazında yatırımcı sayısı TP2'de 167 bin, TLY'de 102 bin; ortalamalar 1,3 ve 2,4 milyon TL)","MKK'dan pozisyon büyüklüğü dağılımı"],
+  ["Kohort tutma süreleri (yıl)",()=>PB.hold.map(v=>nf2.format(v)).join(" / "),"var","Enflasyonlu anapara için; giriş dönemlerinin ortalama tutma süresi","Yatırımcı bazında alış tarihleri"],
+  ["Yıllık enflasyon (enflasyonlu anapara)",()=>fp(PB.infl),"var","Enflasyonlu anapara kuralı için kullanılan sabit oran","TÜİK Eylül 2026 TÜFE verisi"],
+  ["Halefiyetle devralınan hukuki tahsilat",()=>fp(PB.subro),"var","Kamunun ödediği tazminle sınırlı devralma payı","Tazmin mevzuatındaki halefiyet hükümleri"],
+  ["Tazmin ödeme takvimi",()=>"başlangıç "+FMT.months(PB.payStart)+", süre "+FMT.months(PB.payMonths),"var","Tasfiyenin azami süresi (6 ay) sonrası ödeme varsayımı","Hükümet veya Kurul açıklaması"],
+  ["Hazine borçlanma faizi ve vadesi",()=>fp(PB.bondRate)+" / "+FMT.years(PB.bondYears),"var","İskonto oranıyla aynı düzeyde tutuldu","Hazine ihale sonuçları"],
+  ["Finansman dağılımı",()=>PUB_MIX.map(([k])=>nf0.format(PB[k])).join(" / "),"var","Politika tasarımı tercihi; hiçbir resmî kaynak dağılımı belirlemedi","Hükümetin finansman yöntemi açıklaması"],
+  ["Sektör ve kamu kuruluşları kaynak kapasitesi",()=>"bilinmiyor","var","YTM özel fonu, TVF, TMSF ve kamu bankalarının serbest kaynağı için kamuya açık veri bulunamadı","YTM özel fon bilançosu, TVF ve TMSF faaliyet raporları"]
+);
+
+// ---------- TABS ----------
+function initTabs(){
+  const tabs=[...document.querySelectorAll(".tab")];
+  const show=t=>{
+    tabs.forEach(x=>{ const on=x===t; x.setAttribute("aria-selected",on?"true":"false"); x.tabIndex=on?0:-1; document.getElementById(x.getAttribute("aria-controls")).hidden=!on; });
+    if(t.id==="t-inv") renderInvestor(lastRun);
+  };
+  tabs.forEach((t,i)=>{
+    t.addEventListener("click",()=>show(t));
+    t.addEventListener("keydown",e=>{
+      if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ const n=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length]; n.focus(); show(n); }
+    });
+  });
+}
+
+// ---------- MAIN ----------
+function update(){
+  const r=run(P); lastRun=r;
+  renderSim(r);
+  if(!document.getElementById("p-inv").hidden) renderInvestor(r);
+  renderCF();
+  renderPub();
+  buildLedger();
+  save();
+}
+buildControls(); buildPresets(); buildCohortRows(); buildMix(); buildData(); buildCF(); buildPub(); initTabs();
+syncControls();
+document.getElementById("objective").addEventListener("change",renderCompare);
+document.getElementById("exclSupport").addEventListener("change",renderCompare);
+["i-units","i-price","i-cost"].forEach(id=>document.getElementById(id).addEventListener("input",()=>renderInvestor(lastRun)));
+document.getElementById("i-tpl").addEventListener("change",e=>{
+  const v=e.target.value; if(TEMPLATES[v]){ MIX={...TEMPLATES[v]}; buildMix(); }
+  renderInvestor(lastRun);
+});
+update();
+})();
+</script>
+</body>
+</html>
